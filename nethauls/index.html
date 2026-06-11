@@ -340,6 +340,7 @@
     outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-pale);
   }
   .form-group textarea { resize: vertical; min-height: 110px; }
+  .form-note { font-size: 0.85rem; color: var(--silver-dark); margin-bottom: 18px; line-height: 1.5; }
   .form-submit { width: 100%; border: none; }
 
   /* ---------- Footer ---------- */
@@ -507,7 +508,7 @@
     <div class="section-head">
       <p class="eyebrow">Services &amp; Pricing</p>
       <h2>Straightforward pricing. No surprise add-ons.</h2>
-      <p>Every job starts with the buying program walkthrough at no cost. Removal pricing below reflects typical jobs across York County. Your final price depends on volume, access, and what comes off the top in cash.</p>
+      <p>Every job starts with the buying program walkthrough at no cost. Removal pricing below reflects typical jobs across York County. Your final price depends on volume, access, and what comes off the top in cash. Trips farther from Kennebunk may include a small gas surcharge, built into your quote up front.</p>
     </div>
     <div class="services-grid">
       <div class="service-card featured reveal">
@@ -769,34 +770,14 @@
         <input type="email" id="email" name="email" placeholder="you@example.com" required>
       </div>
       <div class="form-group">
-        <label for="town">Town</label>
-        <select id="town" name="town" required>
-          <option value="" disabled selected>Select your town</option>
-          <option>Kennebunk</option>
-          <option>Kennebunkport</option>
-          <option>Biddeford</option>
-          <option>Saco</option>
-          <option>Wells</option>
-          <option>Ogunquit</option>
-          <option>York</option>
-          <option>York Beach</option>
-          <option>Cape Neddick</option>
-          <option>Old Orchard Beach</option>
-          <option>Sanford</option>
-          <option>South Berwick</option>
-          <option>Eliot</option>
-          <option>Kittery</option>
-          <option>Arundel</option>
-          <option>Buxton</option>
-          <option>Waterboro</option>
-          <option>Dayton</option>
-          <option>Other / Not Listed</option>
-        </select>
+        <label for="address">Property Address</label>
+        <input type="text" id="address" name="address" placeholder="Street address, town" required>
       </div>
       <div class="form-group">
         <label for="details">What do you need cleared, and is there anything you think might be valuable?</label>
         <textarea id="details" name="details" placeholder="Tell us about the space, what's in it, and any timeline you're working with."></textarea>
       </div>
+      <p class="form-note">Quotes are based on volume, access, and distance from Kennebunk. Properties farther out in York County may include a small gas surcharge, which we'll always confirm with you before the job is booked.</p>
       <button type="submit" class="btn btn-primary form-submit">Send My Request</button>
     </form>
   </div>
