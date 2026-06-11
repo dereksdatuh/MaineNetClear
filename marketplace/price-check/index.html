@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Price Check | NetHauls Marketplace</title>
+<meta name="description" content="Look up live asking-price comps from eBay while you're walking through a job, so you know what an item is worth before you buy it.">
+<link rel="icon" href="../../assets/logo-icon.svg" type="image/svg+xml">
+<style>
+  :root {
+    --black: #080C10;
+    --dark: #0F1923;
+    --dark-mid: #16212E;
+    --white: #FFFFFF;
+    --off-white: #F4F7FA;
+    --blue-deep: #1A6FA8;
+    --blue: #2E8FD4;
+    --blue-light: #72B8E8;
+    --blue-pale: #DCF0FC;
+    --silver: #8C95A8;
+    --silver-light: #C8D0DC;
+    --silver-dark: #5A6478;
+
+    --serif: Georgia, 'Times New Roman', Times, serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --container: 1180px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  body {
+    font-family: var(--sans);
+    color: var(--dark);
+    background: var(--off-white);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; }
+
+  h1, h2, h3, h4 {
+    font-family: var(--serif);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    color: var(--black);
+  }
+
+  .container { max-width: var(--container); margin: 0 auto; padding: 0 28px; }
+
+  /* ---------- Nav ---------- */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    padding: 18px 0; background: rgba(8,12,16,0.92); backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+  .nav-logo { display: flex; align-items: center; gap: 10px; font-family: var(--serif); font-size: 1.35rem; color: var(--white); letter-spacing: 0.01em; }
+  .nav-logo span { color: var(--blue-light); }
+  .nav-logo small { font-size: 0.75rem; font-family: var(--sans); color: var(--silver); letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; }
+  .nav-logo img { width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0; }
+  .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+  .nav-links a { color: var(--silver-light); font-size: 0.92rem; transition: color 0.25s ease; }
+  .nav-links a:hover, .nav-links a.is-active { color: var(--white); }
+  .nav-cta {
+    display: inline-flex; align-items: center; gap: 8px; background: var(--blue); color: var(--white) !important;
+    padding: 10px 20px; border-radius: 999px; font-size: 0.88rem; font-weight: 600;
+    transition: background 0.25s ease, transform 0.25s ease;
+  }
+  .nav-cta:hover { background: var(--blue-light); transform: translateY(-1px); }
+
+  /* ---------- Hero ---------- */
+  .pc-hero {
+    background: var(--black); color: var(--white); padding: 140px 0 70px; position: relative; overflow: hidden;
+  }
+  .pc-hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 0%, rgba(46,143,212,0.25), transparent 60%);
+    pointer-events: none;
+  }
+  .pc-hero-inner { position: relative; max-width: 680px; }
+  .eyebrow {
+    font-size: 0.78rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--blue-light); margin-bottom: 14px;
+  }
+  .pc-hero h1 { font-size: clamp(2rem, 4.5vw, 2.8rem); line-height: 1.15; color: var(--white); margin-bottom: 16px; }
+  .pc-hero p { color: var(--silver-light); font-size: 1.02rem; max-width: 560px; }
+
+  /* ---------- Search ---------- */
+  .pc-search-section { padding: 36px 0 0; }
+  .pc-search-card {
+    background: var(--white); border: 1px solid #E4EAF1; border-radius: 18px;
+    padding: 22px; margin-top: -34px; position: relative; z-index: 2;
+    box-shadow: 0 24px 60px -32px rgba(8,12,16,0.35);
+  }
+  .pc-form { display: flex; gap: 12px; flex-wrap: wrap; }
+  .pc-input {
+    flex: 1 1 240px; border: 1px solid #D7DEE7; border-radius: 999px; padding: 14px 22px;
+    font-size: 1rem; font-family: var(--sans); color: var(--dark); background: var(--white);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+  .pc-input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-pale); }
+  .pc-submit {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    background: var(--blue); color: var(--white); border: none; border-radius: 999px;
+    padding: 14px 30px; font-size: 0.98rem; font-weight: 600; cursor: pointer;
+    transition: background 0.25s ease, transform 0.25s ease;
+    touch-action: manipulation;
+  }
+  .pc-submit:hover { background: var(--blue-light); transform: translateY(-1px); }
+  .pc-submit:disabled { background: var(--silver); cursor: not-allowed; transform: none; }
+  .pc-hint { color: var(--silver-dark); font-size: 0.85rem; margin-top: 12px; }
+
+  /* ---------- Results ---------- */
+  .pc-results-section { padding: 50px 0 110px; }
+  .pc-status { text-align: center; padding: 60px 20px; color: var(--silver-dark); }
+  .pc-status.is-error { color: #B3432B; }
+  .pc-spinner {
+    width: 32px; height: 32px; border-radius: 50%; margin: 0 auto 16px;
+    border: 3px solid var(--blue-pale); border-top-color: var(--blue);
+    animation: pc-spin 0.8s linear infinite;
+  }
+  @keyframes pc-spin { to { transform: rotate(360deg); } }
+
+  .pc-summary {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px;
+    margin-bottom: 36px;
+  }
+  .pc-stat {
+    background: var(--white); border: 1px solid #E4EAF1; border-radius: 16px; padding: 20px;
+    text-align: center;
+  }
+  .pc-stat .label {
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--silver-dark); margin-bottom: 8px;
+  }
+  .pc-stat .value { font-family: var(--serif); font-size: 1.6rem; color: var(--black); }
+  .pc-stat.highlight { background: var(--blue); border-color: var(--blue); }
+  .pc-stat.highlight .label { color: var(--blue-pale); }
+  .pc-stat.highlight .value { color: var(--white); }
+
+  .results-meta { color: var(--silver-dark); font-size: 0.92rem; margin-bottom: 24px; }
+  .product-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px;
+  }
+  .product-card {
+    background: var(--white); border: 1px solid #E4EAF1; border-radius: 18px; overflow: hidden;
+    transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease), border-color 0.3s ease;
+    display: flex; flex-direction: column;
+  }
+  .product-card:hover { transform: translateY(-5px); box-shadow: 0 18px 46px -24px rgba(8,12,16,0.25); border-color: var(--blue-pale); }
+  .product-thumb { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: var(--dark-mid); }
+  .product-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .condition-badge {
+    position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.92); color: var(--blue-deep);
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 6px 12px; border-radius: 999px;
+  }
+  .product-body { padding: 16px 18px 20px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+  .product-body h3 { font-size: 1rem; line-height: 1.35; font-weight: 600; font-family: var(--sans); color: var(--dark); }
+  .product-price { font-family: var(--serif); font-size: 1.3rem; color: var(--blue-deep); }
+  .product-link {
+    margin-top: auto; padding-top: 8px; font-size: 0.85rem; font-weight: 600; color: var(--blue);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .product-link:hover { color: var(--blue-deep); }
+
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--silver-dark); }
+  .empty-state h3 { color: var(--black); margin-bottom: 10px; }
+
+  .pc-disclaimer {
+    margin-top: 40px; padding: 16px 18px; background: var(--white); border: 1px solid #E4EAF1;
+    border-radius: 12px; color: var(--silver-dark); font-size: 0.85rem; text-align: center;
+  }
+
+  /* ---------- Footer ---------- */
+  .footer { background: var(--black); color: var(--silver); padding: 50px 0 28px; }
+  .footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  .footer-brand { font-family: var(--serif); font-size: 1.3rem; color: var(--white); display: flex; align-items: center; gap: 10px; }
+  .footer-brand span { color: var(--blue-light); }
+  .footer-brand img { width: 28px; height: 28px; border-radius: 7px; }
+  .footer-links { display: flex; gap: 24px; list-style: none; flex-wrap: wrap; }
+  .footer-links a { font-size: 0.9rem; color: var(--silver); transition: color 0.25s ease; }
+  .footer-links a:hover { color: var(--blue-light); }
+  .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); margin-top: 30px; padding-top: 22px; font-size: 0.85rem; color: var(--silver-dark); text-align: center; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 720px) {
+    .nav-links { display: none; }
+    .pc-search-card { margin-top: -40px; }
+    .pc-form { flex-direction: column; }
+    .pc-input { flex: none; width: 100%; }
+    .pc-submit { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav class="nav">
+  <div class="container nav-inner">
+    <a href="../index.html" class="nav-logo"><img src="../../assets/logo-icon.svg" alt="">NetHauls<span>.</span> <small>Marketplace</small></a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Browse Items</a></li>
+      <li><a href="./" class="is-active">Price Check</a></li>
+      <li><a href="../../nethauls/index.html">Removal &amp; Buying Program</a></li>
+      <li><a href="../../nethauls/index.html#contact" class="nav-cta">Get a Quote</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="pc-hero">
+  <div class="container pc-hero-inner">
+    <p class="eyebrow">NetHauls Marketplace</p>
+    <h1>Know what it's worth, before you buy it.</h1>
+    <p>Type in an item during a walkthrough and pull live asking prices from eBay so you can make a fair on-the-spot offer and price it correctly when it lands in the marketplace.</p>
+  </div>
+</header>
+
+<!-- ============ SEARCH ============ -->
+<section class="pc-search-section">
+  <div class="container">
+    <form class="pc-search-card" id="pcForm">
+      <div class="pc-form">
+        <input type="text" class="pc-input" id="pcQuery" placeholder="e.g. Keurig K-Elite, Ethan Allen dresser, DeWalt drill&hellip;" autocomplete="off" required>
+        <button type="submit" class="pc-submit" id="pcSubmit">Check price</button>
+      </div>
+      <p class="pc-hint">Be specific — brand and model name gives the most accurate comps.</p>
+    </form>
+  </div>
+</section>
+
+<!-- ============ RESULTS ============ -->
+<section class="pc-results-section">
+  <div class="container">
+    <div id="pcResults">
+      <div class="empty-state">
+        <h3>Search for an item to see live price comps</h3>
+        <p>Results pull current asking prices from similar listings on eBay.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand"><img src="../../assets/logo-icon.svg" alt="">NetHauls<span>.</span> Marketplace</div>
+      <ul class="footer-links">
+        <li><a href="../../nethauls/index.html">Main Site</a></li>
+        <li><a href="tel:+12074686998">(207) 468-6998</a></li>
+        <li><a href="mailto:info@nethauls.com">info@nethauls.com</a></li>
+        <li><a href="https://instagram.com/nethauls" target="_blank" rel="noopener">@nethauls</a></li>
+      </ul>
+    </div>
+    <div class="footer-bottom">
+      &copy; <span id="year"></span> NetHauls LLC. Price comps are for reference only and reflect live asking prices, not guaranteed sale prices.
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Set this to your deployed pricing worker URL (see /worker/README or wrangler.toml).
+  const PRICE_API_URL = 'https://nethauls-pricing-api.YOUR-SUBDOMAIN.workers.dev';
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  const form = document.getElementById('pcForm');
+  const input = document.getElementById('pcQuery');
+  const submitBtn = document.getElementById('pcSubmit');
+  const results = document.getElementById('pcResults');
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function formatPrice(value, currency) {
+    if (typeof value !== 'number') return '—';
+    try {
+      return new Intl.NumberFormat('en-US', { style: 'currency', currency: currency || 'USD' }).format(value);
+    } catch {
+      return `$${value.toFixed(2)}`;
+    }
+  }
+
+  function renderLoading(query) {
+    results.innerHTML = `
+      <div class="pc-status">
+        <div class="pc-spinner"></div>
+        <p>Searching live listings for "${escapeHtml(query)}"&hellip;</p>
+      </div>
+    `;
+  }
+
+  function renderError(message) {
+    results.innerHTML = `
+      <div class="pc-status is-error">
+        <h3>Couldn't load price comps</h3>
+        <p>${escapeHtml(message)}</p>
+      </div>
+    `;
+  }
+
+  function renderResults(data) {
+    const { stats, items, query } = data;
+
+    if (!items || items.length === 0) {
+      results.innerHTML = `
+        <div class="empty-state">
+          <h3>No comparable listings found</h3>
+          <p>Try a more general search term, or include just the brand and item type.</p>
+        </div>
+      `;
+      return;
+    }
+
+    let summaryHtml = '';
+    if (stats) {
+      summaryHtml = `
+        <div class="pc-summary">
+          <div class="pc-stat highlight">
+            <div class="label">Suggested Range</div>
+            <div class="value">${formatPrice(stats.suggestedLow, items[0].currency)} – ${formatPrice(stats.suggestedHigh, items[0].currency)}</div>
+          </div>
+          <div class="pc-stat">
+            <div class="label">Median Asking</div>
+            <div class="value">${formatPrice(stats.median, items[0].currency)}</div>
+          </div>
+          <div class="pc-stat">
+            <div class="label">Lowest</div>
+            <div class="value">${formatPrice(stats.min, items[0].currency)}</div>
+          </div>
+          <div class="pc-stat">
+            <div class="label">Highest</div>
+            <div class="value">${formatPrice(stats.max, items[0].currency)}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    const cardsHtml = items.map((item) => `
+      <div class="product-card">
+        <div class="product-thumb">
+          ${item.image ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" loading="lazy">` : ''}
+          ${item.condition ? `<span class="condition-badge">${escapeHtml(item.condition)}</span>` : ''}
+        </div>
+        <div class="product-body">
+          <h3>${escapeHtml(item.title)}</h3>
+          <div class="product-price">${formatPrice(item.price, item.currency)}</div>
+          <a class="product-link" href="${escapeHtml(item.url)}" target="_blank" rel="noopener">View on eBay &rarr;</a>
+        </div>
+      </div>
+    `).join('');
+
+    results.innerHTML = `
+      ${summaryHtml}
+      <p class="results-meta">${items.length} comparable listing${items.length === 1 ? '' : 's'} for "${escapeHtml(query)}"</p>
+      <div class="product-grid">${cardsHtml}</div>
+      <div class="pc-disclaimer">
+        Prices reflect current eBay asking prices, not confirmed sale prices. Use as a starting point for your offer and resale price.
+      </div>
+    `;
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const query = input.value.trim();
+    if (!query) return;
+
+    submitBtn.disabled = true;
+    renderLoading(query);
+
+    try {
+      const res = await fetch(`${PRICE_API_URL}?q=${encodeURIComponent(query)}`);
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Something went wrong.');
+      }
+
+      renderResults(data);
+    } catch (err) {
+      renderError(err.message || 'Network error — please try again.');
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>

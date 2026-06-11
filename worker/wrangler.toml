@@ -1,0 +1,11 @@
+name = "nethauls-pricing-api"
+main = "pricing-api.js"
+compatibility_date = "2024-01-01"
+
+# Restrict CORS to your real site origin once deployed, e.g.
+# [vars]
+# ALLOWED_ORIGIN = "https://nethauls.example.com"
+
+# Set secrets after creating an eBay developer app (developer.ebay.com):
+#   wrangler secret put EBAY_CLIENT_ID
+#   wrangler secret put EBAY_CLIENT_SECRET
