@@ -1035,22 +1035,61 @@
   shield.position.set(house.position.x, house.position.y + 0.5, house.position.z);
   scene.add(shield);
 
-  // Spinning gold coin drifting lower-left
-  const coinGeo = new THREE.CylinderGeometry(0.55, 0.55, 0.12, 28);
-  const coinMat = new THREE.MeshStandardMaterial({
-    color: 0xE0C158, emissive: 0x6B5A1E, emissiveIntensity: 0.3,
-    metalness: 0.7, roughness: 0.25
+  // Truck parked lower-left, getting loaded with cargo
+  const truck = new THREE.Group();
+  const truckMetal = new THREE.MeshStandardMaterial({ color: 0x9AA6BB, metalness: 0.45, roughness: 0.4, flatShading: true });
+  const truckAccent = new THREE.MeshStandardMaterial({
+    color: 0x2E8FD4, emissive: 0x153A52, emissiveIntensity: 0.3, metalness: 0.4, roughness: 0.35, flatShading: true
   });
-  const coin = new THREE.Mesh(coinGeo, coinMat);
-  coin.position.set(-3.3, -1.5, -1);
-  coin.rotation.x = Math.PI / 2.4;
-  scene.add(coin);
+  const wheelMat = new THREE.MeshStandardMaterial({ color: 0x0B141E, metalness: 0.3, roughness: 0.6 });
+
+  const cargoBed = new THREE.Mesh(new THREE.BoxGeometry(1.7, 1.0, 1.0), truckMetal);
+  cargoBed.position.set(-0.2, 0.5, 0);
+  truck.add(cargoBed);
+
+  const cab = new THREE.Mesh(new THREE.BoxGeometry(0.75, 0.75, 0.95), truckAccent);
+  cab.position.set(1.075, 0.375, 0);
+  truck.add(cab);
+
+  const wheelGeo = new THREE.CylinderGeometry(0.22, 0.22, 0.18, 18);
+  [[-0.95, 0.55], [-0.95, -0.55], [0.35, 0.55], [0.35, -0.55], [1.15, 0.55], [1.15, -0.55]].forEach(([x, z]) => {
+    const wheel = new THREE.Mesh(wheelGeo, wheelMat);
+    wheel.rotation.x = Math.PI / 2;
+    wheel.position.set(x, 0, z);
+    truck.add(wheel);
+  });
+
+  truck.position.set(-4.6, -2.7, -1.2);
+  truck.rotation.y = -0.35;
+  truck.scale.setScalar(0.85);
+  scene.add(truck);
+
+  // Bed-top world position where cargo lands (top of cargoBed, in front of cab)
+  truck.updateMatrixWorld(true);
+  const bedTarget = truck.localToWorld(new THREE.Vector3(-0.45, 1.05, 0));
 
   // Lighting
   scene.add(new THREE.AmbientLight(0x335577, 1.4));
   const point = new THREE.PointLight(0x72B8E8, 2.2, 25);
   point.position.set(5, 4, 6);
   scene.add(point);
+
+  // Cargo items flying from the house into the truck bed
+  const cargoColors = [0x72B8E8, 0xC8D0DC, 0x8C95A8, 0x2E8FD4];
+  const cargoItems = [];
+  const CARGO_COUNT = 5;
+  const cargoOrigin = new THREE.Vector3(house.position.x - 0.6, house.position.y - 0.7, house.position.z + 0.6);
+  for (let i = 0; i < CARGO_COUNT; i++) {
+    const mat = new THREE.MeshStandardMaterial({
+      color: cargoColors[i % cargoColors.length], metalness: 0.3, roughness: 0.5,
+      flatShading: true, transparent: true, opacity: 0
+    });
+    const item = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.32, 0.32), mat);
+    item.userData.duration = 2600;
+    item.userData.offset = i * (item.userData.duration / CARGO_COUNT);
+    scene.add(item);
+    cargoItems.push(item);
+  }
 
   // "Cash flowing out" — floating dollar-coin sprites drifting up from the house
   function makeCashTexture() {
@@ -1060,12 +1099,12 @@
     const ctx = cnv.getContext('2d');
     ctx.beginPath();
     ctx.arc(size / 2, size / 2, size / 2 - 6, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(224, 193, 88, 0.92)';
+    ctx.fillStyle = 'rgba(46, 143, 212, 0.5)';
     ctx.fill();
     ctx.lineWidth = 4;
-    ctx.strokeStyle = 'rgba(255,255,255,0.85)';
+    ctx.strokeStyle = 'rgba(114, 184, 232, 0.85)';
     ctx.stroke();
-    ctx.fillStyle = '#16212E';
+    ctx.fillStyle = '#FFFFFF';
     ctx.font = 'bold 70px Georgia';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -1073,7 +1112,7 @@
     return new THREE.CanvasTexture(cnv);
   }
   const cashTexture = makeCashTexture();
-  const cashMat = new THREE.SpriteMaterial({ map: cashTexture, transparent: true, opacity: 0.92 });
+  const cashMat = new THREE.SpriteMaterial({ map: cashTexture, transparent: true, opacity: 0.85 });
 
   function resetCashSprite(s, randomY) {
     s.position.x = house.position.x + (Math.random() - 0.5) * 4.4;
@@ -1121,8 +1160,14 @@
     house.position.y = -0.4 + Math.sin(t * 0.0006) * 0.08;
     shield.rotation.y = t * 0.00009;
     shield.rotation.x = t * 0.00005;
-    coin.rotation.z = t * 0.0009;
-    coin.position.y = -1.5 + Math.sin(t * 0.0009) * 0.25;
+    cargoItems.forEach((item) => {
+      const local = ((t + item.userData.offset) % item.userData.duration) / item.userData.duration;
+      item.position.lerpVectors(cargoOrigin, bedTarget, local);
+      item.position.y += Math.sin(local * Math.PI) * 0.6;
+      item.rotation.x = local * Math.PI * 2;
+      item.rotation.y = local * Math.PI * 1.5;
+      item.material.opacity = local < 0.08 ? (local / 0.08) * 0.9 : (local > 0.85 ? ((1 - local) / 0.15) * 0.9 : 0.9);
+    });
 
     cashSprites.forEach((s) => {
       s.position.y += s.userData.speed * dt;
