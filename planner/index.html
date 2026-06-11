@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="NetHauls Business Planner: interactive startup budget, monthly overhead, load cost calculator, revenue projections, and launch checklist for a Maine junk removal and buying business.">
+  <title>NetHauls | Business Planner &amp; Load Cost Calculator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ============ SCROLL PROGRESS ============ -->
+  <div class="scroll-progress" id="scroll-progress"></div>
+
+  <!-- ============ NAVIGATION ============ -->
+  <header class="planner-header">
+    <nav class="planner-navbar" aria-label="Planner navigation">
+      <a href="#top" class="planner-brand">
+        <svg class="logo-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <circle cx="20" cy="20" r="18.5" stroke="#2E8FD4" stroke-width="1.5"/>
+          <path d="M9 14L20 9L31 14" stroke="#8C95A8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M9 14V26L20 31L31 26V14" stroke="#8C95A8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M14.5 19.5L18.5 23.5L26 15" stroke="#2E8FD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="planner-brand-text">
+          <span class="brand-name">NetHauls</span>
+          <span class="brand-sub">Business Planner</span>
+        </span>
+      </a>
+
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+
+      <div class="planner-nav planner-nav-links" id="planner-nav-links">
+        <a href="#startup">Startup Costs</a>
+        <a href="#overhead">Monthly Overhead</a>
+        <a href="#load-calc">Load Calculator</a>
+        <a href="#revenue">Revenue &amp; Break-Even</a>
+        <a href="#outlook">5-Year Outlook</a>
+        <a href="#checklist">Launch Checklist</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top">
+
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="hero-aurora" aria-hidden="true"></div>
+      <div class="grain-overlay" aria-hidden="true"></div>
+      <div class="hero-inner">
+        <p class="eyebrow fade-in-up" style="animation-delay: 0.05s;">Internal Planning Tool</p>
+        <h1 class="fade-in-up" style="animation-delay: 0.1s;">Plan the launch.<br>Price every <span class="text-gradient">load</span>.<br>Know your numbers.</h1>
+        <p class="hero-sub fade-in-up" style="animation-delay: 0.2s;">An all-in-one calculator for starting and running a Maine junk removal &amp; on-site buying business: itemized startup budget, monthly overhead, a per-job load cost &amp; pricing generator, revenue and break-even projections, a 5-year financial outlook, and a step-by-step launch checklist. Every number is editable and saved automatically in this browser.</p>
+        <div class="hero-ctas fade-in-up" style="animation-delay: 0.3s;">
+          <a href="#startup" class="btn btn-primary">Start with Startup Costs</a>
+          <a href="#load-calc" class="btn btn-ghost">Jump to Load Calculator</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ STARTUP COSTS ============ -->
+    <section class="planner-section" id="startup">
+      <div class="container">
+        <div class="reveal">
+          <p class="eyebrow eyebrow-dark">Step 1</p>
+          <h2>Startup Cost Builder</h2>
+          <p class="section-body">Every one-time cost to get from zero to your first paying job: legal formation, insurance, equipment, branding, digital presence, and operating reserves. Toggle a preset or edit any value, then turn off items you don't need with the switch on the right.</p>
+        </div>
+
+        <div class="preset-bar reveal" style="transition-delay: 0.05s;">
+          <button class="btn btn-chip" id="btn-preset-lean">Lean Preset</button>
+          <button class="btn btn-chip" id="btn-preset-standard">Standard Preset</button>
+          <span class="preset-note">Lean: DIY logo, used trailer, basic insurance. Standard: new trailer, full ad budget, professional setup from day one.</span>
+        </div>
+
+        <div class="planner-layout reveal" style="transition-delay: 0.1s;">
+          <div class="planner-table-wrap">
+            <table class="planner-table">
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Typical Range</th>
+                  <th>Your Budget</th>
+                  <th>Include</th>
+                </tr>
+              </thead>
+              <tbody id="startup-body"></tbody>
+            </table>
+          </div>
+
+          <aside class="summary-card sticky-card">
+            <p class="summary-label">Total Startup Investment</p>
+            <p class="summary-value" id="startup-total">$0</p>
+            <div class="summary-breakdown" id="startup-breakdown"></div>
+            <p class="summary-footnote">Reference: full plan estimates $4,500&ndash;$5,500 lean, $6,500&ndash;$9,000 standard.</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ MONTHLY OVERHEAD ============ -->
+    <section class="planner-section planner-section-alt" id="overhead">
+      <div class="container">
+        <div class="reveal">
+          <p class="eyebrow eyebrow-dark">Step 2</p>
+          <h2>Monthly Operating Overhead</h2>
+          <p class="section-body">Recurring monthly costs once the business is running, regardless of job volume. This total feeds directly into the break-even calculator below.</p>
+        </div>
+
+        <div class="planner-layout reveal" style="transition-delay: 0.1s;">
+          <div class="planner-table-wrap">
+            <table class="planner-table">
+              <thead>
+                <tr>
+                  <th>Expense</th>
+                  <th>Typical Range</th>
+                  <th>Your Estimate</th>
+                </tr>
+              </thead>
+              <tbody id="monthly-body"></tbody>
+            </table>
+          </div>
+
+          <aside class="summary-card sticky-card">
+            <p class="summary-label">Total Monthly Overhead</p>
+            <p class="summary-value" id="monthly-total">$0</p>
+            <p class="summary-secondary" id="monthly-total-annual">$0 / year</p>
+            <p class="summary-footnote">Reference: full plan estimates $1,040&ndash;$2,070/month, ~$1,500/month conservative average.</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ LOAD / JOB COST CALCULATOR ============ -->
+    <section class="planner-section" id="load-calc">
+      <div class="container">
+        <div class="reveal">
+          <p class="eyebrow eyebrow-dark">Step 3</p>
+          <h2>Load &amp; Job Cost Generator</h2>
+          <p class="section-body">Price an individual job. Pick a job type to load typical defaults, then adjust the service fee, travel distance, dump fee, and on-site buying program details. The buying program offsets the customer's bill today and pays off again when you resell the items.</p>
+        </div>
+
+        <div class="planner-layout planner-layout-calc reveal" style="transition-delay: 0.1s;">
+          <div class="calc-form">
+            <div class="form-section">
+              <h3>Job Basics</h3>
+              <div class="form-grid">
+                <div class="form-field">
+                  <label for="job-type">Job Type</label>
+                  <select id="job-type"></select>
+                  <p class="field-hint" id="job-range"></p>
+                </div>
+                <div class="form-field">
+                  <label for="job-fee">Service Fee Charged ($)</label>
+                  <input type="number" id="job-fee" min="0" step="5">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3>Travel &amp; Fuel</h3>
+              <div class="form-grid form-grid-3">
+                <div class="form-field">
+                  <label for="job-distance">Round-Trip Distance (mi)</label>
+                  <input type="number" id="job-distance" min="0" step="1" value="20">
+                </div>
+                <div class="form-field">
+                  <label for="job-mpg">Towing Fuel Economy (mpg)</label>
+                  <input type="number" id="job-mpg" min="1" step="0.5" value="13">
+                </div>
+                <div class="form-field">
+                  <label for="job-fuelprice">Fuel Price ($/gal)</label>
+                  <input type="number" id="job-fuelprice" min="0" step="0.05" value="3.25">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3>Dump &amp; Disposal</h3>
+              <div class="form-grid form-grid-3">
+                <div class="form-field">
+                  <label for="job-weight">Estimated Load Weight (lbs)</label>
+                  <input type="number" id="job-weight" min="0" step="50">
+                </div>
+                <div class="form-field">
+                  <label for="job-dumprate">Transfer Station Rate ($/ton)</label>
+                  <input type="number" id="job-dumprate" min="0" step="5" value="100">
+                </div>
+                <div class="form-field">
+                  <label for="job-mattresses"># of Mattresses</label>
+                  <input type="number" id="job-mattresses" min="0" step="1">
+                </div>
+                <div class="form-field">
+                  <label for="job-mattressfee">Mattress Fee Each ($)</label>
+                  <input type="number" id="job-mattressfee" min="0" step="0.5" value="17.50">
+                </div>
+                <div class="form-field">
+                  <label for="job-scrap">Scrap Metal Credit ($)</label>
+                  <input type="number" id="job-scrap" min="0" step="5" value="0">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3>On-Site Buying Program</h3>
+              <div class="form-grid form-grid-3">
+                <div class="form-field">
+                  <label for="job-resale">Estimated Resale Value of Items ($)</label>
+                  <input type="number" id="job-resale" min="0" step="5" value="0">
+                </div>
+                <div class="form-field">
+                  <label for="job-buypct">Buy Offer (% of resale value)</label>
+                  <input type="number" id="job-buypct" min="0" max="100" step="1" value="15">
+                </div>
+              </div>
+              <p class="field-hint">Standard practice: offer 10&ndash;20 cents on the resale dollar. The discount comes off the customer's bill today; the margin (resale value minus what you offered) is realized when you sell the item, typically within 2&ndash;4 weeks.</p>
+            </div>
+          </div>
+
+          <aside class="summary-card calc-summary sticky-card">
+            <p class="summary-label">Total Job Profit</p>
+            <p class="summary-value" id="out-totalprofit">$0</p>
+            <p class="summary-secondary"><span id="out-marginpct">0%</span> margin on service fee</p>
+
+            <div class="calc-breakdown">
+              <div class="calc-row"><span>Cash collected at job</span><span id="out-cashcollected">$0</span></div>
+              <div class="calc-row calc-row-sub"><span>&minus; Buying program discount</span><span id="out-buydiscount">$0</span></div>
+              <div class="calc-row"><span>&minus; Dump / transfer fee</span><span id="out-dumpfee">$0</span></div>
+              <div class="calc-row"><span>&minus; Fuel cost</span><span id="out-fuelcost">$0</span></div>
+              <div class="calc-row calc-row-total"><span>= Net cash today</span><span id="out-immediatenet">$0</span></div>
+              <div class="calc-row calc-row-future"><span>+ Resale margin (later)</span><span id="out-resalemargin">$0</span></div>
+            </div>
+
+            <button class="btn btn-chip btn-block" id="btn-use-job-profit">Use This Job in Revenue Projector &rarr;</button>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ REVENUE & BREAK-EVEN ============ -->
+    <section class="planner-section planner-section-alt" id="revenue">
+      <div class="container">
+        <div class="reveal">
+          <p class="eyebrow eyebrow-dark">Step 4</p>
+          <h2>Revenue &amp; Break-Even Projector</h2>
+          <p class="section-body">Turn a per-job profit into weekly, monthly, and annual numbers, and see how many jobs per week you need to break even or hit a profit target. Monthly overhead is pulled in automatically from Step 2 unless you edit it here.</p>
+        </div>
+
+        <div class="planner-layout planner-layout-calc reveal" style="transition-delay: 0.1s;">
+          <div class="calc-form">
+            <div class="form-section">
+              <h3>Inputs</h3>
+              <div class="form-grid form-grid-2">
+                <div class="form-field">
+                  <label for="rev-jobsperweek">Jobs Per Week</label>
+                  <input type="number" id="rev-jobsperweek" min="0" step="0.5" value="3">
+                </div>
+                <div class="form-field">
+                  <label for="rev-revenueperjob">Avg Cash Revenue Per Job ($)</label>
+                  <input type="number" id="rev-revenueperjob" min="0" step="5" value="350">
+                  <p class="field-hint">Service fee collected at the job (after any buying-program discount).</p>
+                </div>
+                <div class="form-field">
+                  <label for="rev-profitperjob">Avg Total Profit Per Job ($)</label>
+                  <input type="number" id="rev-profitperjob" min="0" step="5" value="250">
+                  <p class="field-hint">After dump fees, fuel, and including resale margin once items sell.</p>
+                </div>
+                <div class="form-field">
+                  <label for="rev-overhead">Monthly Overhead ($)</label>
+                  <input type="number" id="rev-overhead" min="0" step="10" value="1500">
+                  <p class="field-hint">Auto-filled from Step 2. Edit to override.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3>Break-Even &amp; Targets</h3>
+              <div class="be-grid">
+                <div class="be-card">
+                  <p class="be-label">Break-Even</p>
+                  <p class="be-value" id="be-breakeven">&mdash;</p>
+                  <p class="be-sub">jobs/week to cover overhead</p>
+                </div>
+                <div class="be-card">
+                  <p class="be-label">$3,000/mo Profit Target</p>
+                  <p class="be-value" id="be-target3k">&mdash;</p>
+                  <p class="be-sub">side-hustle income level</p>
+                </div>
+                <div class="be-card">
+                  <p class="be-label">$6,000/mo Profit Target</p>
+                  <p class="be-value" id="be-target6k">&mdash;</p>
+                  <p class="be-sub">full-time-ready income level</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <aside class="summary-card calc-summary sticky-card">
+            <p class="summary-label">Monthly Net Profit</p>
+            <p class="summary-value" id="rev-monthlynet">$0</p>
+            <p class="summary-secondary" id="rev-annualnet">$0 / year</p>
+
+            <div class="calc-breakdown">
+              <div class="calc-row"><span>Weekly cash revenue</span><span id="rev-weekly">$0</span></div>
+              <div class="calc-row"><span>Monthly cash revenue</span><span id="rev-monthly">$0</span></div>
+              <div class="calc-row calc-row-total"><span>Annual cash revenue</span><span id="rev-annual">$0</span></div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 5-YEAR OUTLOOK ============ -->
+    <section class="planner-section" id="outlook">
+      <div class="container">
+        <div class="reveal">
+          <p class="eyebrow eyebrow-dark">The Long View</p>
+          <h2>5-Year Financial Outlook</h2>
+          <p class="section-body">Reference projections from solo side hustle to a two-truck operation, assuming consistent marketing, agent referral relationships, and reinvestment of profit into equipment.</p>
+        </div>
+
+        <div class="outlook-table-wrap reveal" style="transition-delay: 0.1s;">
+          <table class="outlook-table">
+            <thead>
+              <tr>
+                <th>Year &amp; Phase</th>
+                <th>Operations</th>
+                <th>Gross Revenue</th>
+                <th>Net Profit</th>
+                <th>Milestone</th>
+              </tr>
+            </thead>
+            <tbody id="fiveyear-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ LAUNCH CHECKLIST ============ -->
+    <section class="planner-section planner-section-alt" id="checklist">
+      <div class="container">
+        <div class="reveal">
+          <p class="eyebrow eyebrow-dark">Step 5</p>
+          <h2>Launch Checklist</h2>
+          <p class="section-body">A chronological sequence from LLC formation to first paying job, roughly 3&ndash;5 weeks of part-time work. Check items off as you complete them; progress is saved automatically.</p>
+        </div>
+
+        <div class="checklist-progress-wrap reveal" style="transition-delay: 0.1s;">
+          <div class="checklist-progress-bar-track">
+            <div class="checklist-progress-bar" id="checklist-progress-bar"></div>
+          </div>
+          <p class="checklist-progress-label"><span id="checklist-done">0</span> of <span id="checklist-total">0</span> complete (<span id="checklist-progress-pct">0%</span>)</p>
+        </div>
+
+        <div class="checklist-grid reveal" id="checklist-container" style="transition-delay: 0.15s;"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="planner-footer">
+    <div class="container footer-inner">
+      <p>NetHauls Business Planner &middot; All figures are editable estimates based on the York County, Maine market and are not financial advice.</p>
+      <button class="btn btn-ghost-dark" id="btn-reset-all">Reset All Values</button>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
