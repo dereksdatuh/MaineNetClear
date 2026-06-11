@@ -1,551 +1,926 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="NetHauls: Maine's buyer-first junk removal company. We pay cash for items of value and haul the rest. Estate cleanouts, same-day service, Kennebunk, Maine.">
-  <title>NetHauls | Junk Removal &amp; Property Clearing | Kennebunk, Maine</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NetHauls LLC | Cash for Items of Value, Removal in Kennebunk &amp; York County, ME</title>
+<meta name="description" content="NetHauls LLC pays cash on the spot for items of value before hauling the rest. Serving Kennebunk and all of York County, Maine. Same-day scheduling, licensed and insured.">
+<style>
+  :root {
+    --black: #080C10;
+    --dark: #0F1923;
+    --dark-mid: #16212E;
+    --white: #FFFFFF;
+    --off-white: #F4F7FA;
+    --blue-deep: #1A6FA8;
+    --blue: #2E8FD4;
+    --blue-light: #72B8E8;
+    --blue-pale: #DCF0FC;
+    --silver: #8C95A8;
+    --silver-light: #C8D0DC;
+    --silver-dark: #5A6478;
+
+    --serif: Georgia, 'Times New Roman', Times, serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --container: 1180px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  body {
+    font-family: var(--sans);
+    color: var(--dark);
+    background: var(--white);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+
+  h1, h2, h3, h4 {
+    font-family: var(--serif);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    color: var(--black);
+  }
+
+  .container { max-width: var(--container); margin: 0 auto; padding: 0 28px; }
+  section { position: relative; }
+
+  /* ---------- Reveal animations ---------- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.08s; }
+  .reveal-delay-2 { transition-delay: 0.16s; }
+  .reveal-delay-3 { transition-delay: 0.24s; }
+  .reveal-delay-4 { transition-delay: 0.32s; }
+  .reveal-delay-5 { transition-delay: 0.4s; }
+
+  /* ---------- Nav ---------- */
+  .nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    padding: 22px 0;
+    transition: background 0.4s var(--ease), padding 0.4s var(--ease), border-color 0.4s var(--ease), backdrop-filter 0.4s var(--ease);
+    border-bottom: 1px solid transparent;
+  }
+  .nav.is-scrolled {
+    padding: 14px 0;
+    background: rgba(8, 12, 16, 0.78);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--serif); font-size: 1.4rem; color: var(--white); letter-spacing: 0.01em;
+  }
+  .nav-logo span { color: var(--blue-light); }
+  .nav-links { display: flex; align-items: center; gap: 36px; list-style: none; }
+  .nav-links a {
+    color: var(--silver-light); font-size: 0.93rem; letter-spacing: 0.02em;
+    transition: color 0.25s ease; position: relative;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--blue); color: var(--white) !important;
+    padding: 11px 22px; border-radius: 999px; font-size: 0.9rem; font-weight: 600; letter-spacing: 0.01em;
+    transition: background 0.25s ease, transform 0.25s ease; white-space: nowrap;
+  }
+  .nav-cta:hover { background: var(--blue-light); transform: translateY(-1px); }
+  .nav-toggle {
+    display: none; flex-direction: column; gap: 5px;
+    background: none; border: none; cursor: pointer; padding: 8px;
+  }
+  .nav-toggle span { display: block; width: 22px; height: 2px; background: var(--white); border-radius: 2px; transition: transform 0.3s ease, opacity 0.3s ease; }
+  .nav-toggle.is-active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-toggle.is-active span:nth-child(2) { opacity: 0; }
+  .nav-toggle.is-active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* ---------- Hero ---------- */
+  .hero { background: var(--black); color: var(--white); padding: 160px 0 110px; overflow: hidden; position: relative; }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 900px 600px at 18% 12%, rgba(46,143,212,0.22), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 85% 80%, rgba(114,184,232,0.12), transparent 60%);
+    pointer-events: none;
+  }
+  .hero-glow { position: absolute; border-radius: 50%; filter: blur(90px); pointer-events: none; opacity: 0.5; }
+  .hero-glow-1 { width: 480px; height: 480px; background: radial-gradient(circle, rgba(46,143,212,0.35), transparent 70%); top: -160px; left: -120px; }
+  .hero-glow-2 { width: 420px; height: 420px; background: radial-gradient(circle, rgba(114,184,232,0.22), transparent 70%); bottom: -180px; right: -100px; }
+  .hero-inner { position: relative; z-index: 2; display: grid; grid-template-columns: 1.25fr 0.95fr; gap: 60px; align-items: center; }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 10px; font-size: 0.78rem;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--blue-light);
+    margin-bottom: 24px; font-weight: 600;
+  }
+  .hero-eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--blue-light); }
+  .hero h1 {
+    font-size: clamp(2.6rem, 6vw, 4.6rem); line-height: 1.08; color: var(--white);
+    margin-bottom: 26px; opacity: 0; transform: translateY(20px);
+    animation: heroIn 1s var(--ease) 0.2s forwards;
+  }
+  @keyframes heroIn { to { opacity: 1; transform: translateY(0); } }
+  .hero h1 .accent { color: var(--blue-light); }
+  .hero-sub {
+    font-size: 1.1rem; color: var(--silver-light); max-width: 520px; margin-bottom: 38px;
+    opacity: 0; transform: translateY(20px); animation: heroIn 1s var(--ease) 0.4s forwards;
+  }
+  .hero-ctas {
+    display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 56px;
+    opacity: 0; transform: translateY(20px); animation: heroIn 1s var(--ease) 0.6s forwards;
+  }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 16px 32px; border-radius: 999px; font-size: 0.96rem; font-weight: 600; letter-spacing: 0.01em;
+    cursor: pointer; border: 1px solid transparent;
+    transition: transform 0.3s var(--ease), background 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .btn-primary { background: var(--blue); color: var(--white); box-shadow: 0 8px 30px -10px rgba(46,143,212,0.6); }
+  .btn-primary:hover { background: var(--blue-light); transform: translateY(-2px); box-shadow: 0 12px 36px -10px rgba(114,184,232,0.7); }
+  .btn-ghost { background: transparent; color: var(--white); border-color: rgba(255,255,255,0.22); }
+  .btn-ghost:hover { border-color: var(--blue-light); color: var(--blue-light); transform: translateY(-2px); }
+  .btn-dark { background: var(--black); color: var(--white); }
+  .btn-dark:hover { background: var(--dark-mid); transform: translateY(-2px); }
+
+  .hero-trustline {
+    display: flex; gap: 28px; flex-wrap: wrap; color: var(--silver); font-size: 0.85rem;
+    opacity: 0; animation: heroIn 1s var(--ease) 0.8s forwards;
+  }
+  .hero-trustline strong { color: var(--white); font-weight: 600; }
+
+  .hero-stats { display: flex; flex-direction: column; gap: 18px; position: relative; z-index: 2; }
+  .stat-card {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px;
+    padding: 26px 28px; backdrop-filter: blur(10px);
+    transition: transform 0.4s var(--ease), border-color 0.4s ease, background 0.4s ease;
+  }
+  .stat-card:hover { transform: translateY(-4px); border-color: rgba(114,184,232,0.35); background: rgba(255,255,255,0.06); }
+  .stat-card .stat-num { font-family: var(--serif); font-size: 2.4rem; color: var(--blue-light); line-height: 1; margin-bottom: 8px; }
+  .stat-card .stat-label { color: var(--silver-light); font-size: 0.92rem; letter-spacing: 0.01em; }
+
+  /* ---------- Trust bar ---------- */
+  .trust-bar { background: var(--off-white); border-bottom: 1px solid #E4EAF1; padding: 28px 0; }
+  .trust-bar-inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 18px; }
+  .trust-item { display: flex; align-items: center; gap: 10px; font-size: 0.86rem; color: var(--silver-dark); font-weight: 600; letter-spacing: 0.01em; }
+  .trust-item svg { flex-shrink: 0; color: var(--blue); }
+
+  /* ---------- Section heads ---------- */
+  .section { padding: 110px 0; }
+  .section-tight { padding: 90px 0; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px; font-size: 0.78rem;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--blue); font-weight: 700; margin-bottom: 18px;
+  }
+  .eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--blue); }
+  .section-head { max-width: 680px; margin-bottom: 64px; }
+  .section-head h2 { font-size: clamp(2rem, 4.4vw, 3rem); line-height: 1.15; margin-bottom: 18px; }
+  .section-head p { color: var(--silver-dark); font-size: 1.05rem; max-width: 560px; }
+  .section-head.center { margin-left: auto; margin-right: auto; text-align: center; }
+  .section-head.center .eyebrow { justify-content: center; }
+  .section-head.center .eyebrow::before { display: none; }
+  .section-head.center p { margin-left: auto; margin-right: auto; }
+  .section-head.on-dark h2 { color: var(--white); }
+  .section-head.on-dark p { color: var(--silver); }
+  .section-head.on-dark .eyebrow { color: var(--blue-light); }
+  .section-head.on-dark .eyebrow::before { background: var(--blue-light); }
+
+  /* ---------- Difference section ---------- */
+  .diff-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  .diff-card { border-radius: 22px; padding: 44px 38px; }
+  .diff-card.them { background: var(--off-white); border: 1px solid #E4EAF1; }
+  .diff-card.us { background: var(--black); color: var(--white); position: relative; overflow: hidden; }
+  .diff-card.us::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 500px 400px at 90% 0%, rgba(46,143,212,0.25), transparent 60%);
+    pointer-events: none;
+  }
+  .diff-card h3 { font-size: 1.6rem; margin-bottom: 28px; position: relative; z-index: 1; }
+  .diff-card.us h3 { color: var(--white); }
+  .diff-list { list-style: none; display: flex; flex-direction: column; gap: 18px; position: relative; z-index: 1; }
+  .diff-list li { display: flex; gap: 14px; font-size: 0.98rem; align-items: flex-start; }
+  .diff-card.them .diff-list li { color: var(--silver-dark); }
+  .diff-card.us .diff-list li { color: var(--silver-light); }
+  .diff-icon { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+  .diff-card.them .diff-icon { background: #E4EAF1; color: var(--silver-dark); }
+  .diff-card.us .diff-icon { background: rgba(46,143,212,0.2); color: var(--blue-light); }
+
+  /* ---------- Services ---------- */
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .service-card {
+    border: 1px solid #E4EAF1; border-radius: 20px; padding: 36px 32px; background: var(--white);
+    transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease), border-color 0.4s ease;
+  }
+  .service-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px -24px rgba(8,12,16,0.25); border-color: var(--blue-pale); }
+  .service-card h3 { font-size: 1.35rem; margin-bottom: 10px; }
+  .service-card .price { font-family: var(--serif); font-size: 1.7rem; color: var(--blue-deep); margin-bottom: 14px; }
+  .service-card p { color: var(--silver-dark); font-size: 0.95rem; margin-bottom: 18px; }
+  .service-card ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .service-card ul li { display: flex; gap: 10px; font-size: 0.9rem; color: var(--silver-dark); align-items: flex-start; }
+  .service-card ul li svg { flex-shrink: 0; color: var(--blue); margin-top: 2px; }
+
+  .service-card.featured {
+    background: var(--black); color: var(--white); border-color: var(--black);
+    grid-column: span 1; position: relative; overflow: hidden;
+  }
+  .service-card.featured::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 400px 300px at 100% 0%, rgba(114,184,232,0.25), transparent 60%);
+    pointer-events: none;
+  }
+  .service-card.featured h3, .service-card.featured .price { color: var(--white); position: relative; z-index: 1; }
+  .service-card.featured .price { color: var(--blue-light); }
+  .service-card.featured p { color: var(--silver-light); position: relative; z-index: 1; }
+  .service-card.featured ul li { color: var(--silver-light); position: relative; z-index: 1; }
+  .service-card.featured ul li svg { color: var(--blue-light); }
+  .badge {
+    display: inline-block; background: var(--blue); color: var(--white); font-size: 0.72rem;
+    font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 5px 12px;
+    border-radius: 999px; margin-bottom: 16px; position: relative; z-index: 1;
+  }
+
+  /* ---------- How it works ---------- */
+  .how { background: var(--black); color: var(--white); }
+  .how-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+  .how-step { position: relative; padding-top: 10px; }
+  .how-step .num {
+    font-family: var(--serif); font-size: 6rem; line-height: 1; color: rgba(255,255,255,0.06);
+    position: absolute; top: -30px; left: -6px; z-index: 0; user-select: none;
+  }
+  .how-step h3 { color: var(--white); font-size: 1.4rem; margin-bottom: 12px; position: relative; z-index: 1; }
+  .how-step p { color: var(--silver); font-size: 0.97rem; position: relative; z-index: 1; }
+
+  /* ---------- About / expertise ---------- */
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+  .expertise-list { display: flex; flex-direction: column; }
+  .expertise-item {
+    display: flex; align-items: center; justify-content: space-between; gap: 20px;
+    padding: 26px 0; border-bottom: 1px solid #E4EAF1;
+  }
+  .expertise-item:first-child { border-top: 1px solid #E4EAF1; }
+  .expertise-item h4 { font-size: 1.2rem; }
+  .expertise-item span { color: var(--silver-dark); font-size: 0.9rem; max-width: 260px; text-align: right; }
+  .expertise-num { font-family: var(--serif); color: var(--blue-pale); font-size: 0.95rem; -webkit-text-stroke: 1px var(--blue); color: transparent; }
+
+  .trust-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .trust-card { border: 1px solid #E4EAF1; border-radius: 18px; padding: 28px 24px; }
+  .trust-card svg { color: var(--blue); margin-bottom: 16px; }
+  .trust-card h4 { font-size: 1.1rem; margin-bottom: 8px; }
+  .trust-card p { color: var(--silver-dark); font-size: 0.9rem; }
+
+  /* ---------- Agent callout ---------- */
+  .agent-callout { background: var(--black); color: var(--white); position: relative; overflow: hidden; }
+  .agent-callout::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 800px 500px at 50% 100%, rgba(46,143,212,0.18), transparent 65%);
+    pointer-events: none;
+  }
+  .agent-inner { position: relative; z-index: 1; text-align: center; max-width: 760px; margin: 0 auto; }
+  .agent-inner h2 { color: var(--white); margin-bottom: 18px; }
+  .agent-inner p { color: var(--silver); font-size: 1.05rem; margin-bottom: 48px; }
+  .agent-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-bottom: 48px; }
+  .agent-stat .num { font-family: var(--serif); font-size: 2.8rem; color: var(--blue-light); margin-bottom: 6px; }
+  .agent-stat .label { color: var(--silver); font-size: 0.92rem; }
+
+  /* ---------- Service area ---------- */
+  .area-pills { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  .area-pill {
+    border: 1px solid #E4EAF1; border-radius: 999px; padding: 10px 22px; font-size: 0.92rem;
+    color: var(--silver-dark); font-weight: 600; transition: all 0.3s var(--ease);
+  }
+  .area-pill:hover { border-color: var(--blue); color: var(--blue-deep); background: var(--blue-pale); transform: translateY(-2px); }
+
+  /* ---------- Contact ---------- */
+  .contact { background: var(--off-white); }
+  .contact-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 60px; }
+  .contact-info h2 { margin-bottom: 18px; }
+  .contact-info > p { color: var(--silver-dark); font-size: 1.02rem; margin-bottom: 36px; max-width: 440px; }
+  .contact-detail { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 26px; }
+  .contact-detail svg { flex-shrink: 0; color: var(--blue); margin-top: 4px; }
+  .contact-detail h4 { font-size: 1.05rem; margin-bottom: 4px; font-weight: 600; font-family: var(--sans); color: var(--black); }
+  .contact-detail p, .contact-detail a { color: var(--silver-dark); font-size: 0.95rem; }
+  .contact-detail a:hover { color: var(--blue-deep); }
+
+  .form-card { background: var(--white); border-radius: 22px; padding: 44px; border: 1px solid #E4EAF1; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px; }
+  .form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+  .form-group label { font-size: 0.85rem; font-weight: 600; color: var(--black); }
+  .form-group input, .form-group select, .form-group textarea {
+    border: 1px solid #D7DEE7; border-radius: 10px; padding: 13px 16px; font-size: 0.95rem;
+    font-family: var(--sans); color: var(--dark); background: var(--white);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-pale);
+  }
+  .form-group textarea { resize: vertical; min-height: 110px; }
+  .form-submit { width: 100%; border: none; }
+
+  /* ---------- Footer ---------- */
+  .footer { background: var(--black); color: var(--silver); padding: 70px 0 30px; }
+  .footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 50px; margin-bottom: 50px; }
+  .footer-brand { font-family: var(--serif); font-size: 1.5rem; color: var(--white); margin-bottom: 16px; }
+  .footer-brand span { color: var(--blue-light); }
+  .footer-grid p { font-size: 0.92rem; max-width: 320px; }
+  .footer-col h4 { color: var(--white); font-family: var(--sans); font-size: 0.9rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 18px; }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .footer-col a { font-size: 0.92rem; color: var(--silver); transition: color 0.25s ease; }
+  .footer-col a:hover { color: var(--blue-light); }
+  .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 26px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 0.85rem; color: var(--silver-dark); }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 980px) {
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero { padding: 130px 0 70px; }
+    .diff-grid { grid-template-columns: 1fr; }
+    .services-grid { grid-template-columns: 1fr 1fr; }
+    .how-grid { grid-template-columns: 1fr; gap: 60px; }
+    .about-grid { grid-template-columns: 1fr; gap: 50px; }
+    .agent-stats { grid-template-columns: 1fr; gap: 28px; }
+    .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 720px) {
+    .nav-links {
+      position: fixed; top: 0; right: 0; height: 100vh; width: 76%; max-width: 320px;
+      background: var(--black); flex-direction: column; align-items: flex-start; justify-content: center;
+      gap: 28px; padding: 40px; transform: translateX(100%); transition: transform 0.4s var(--ease);
+      box-shadow: -10px 0 40px rgba(0,0,0,0.3);
+    }
+    .nav-links.is-open { transform: translateX(0); }
+    .nav-toggle { display: flex; }
+    .nav-cta { width: 100%; justify-content: center; }
+    .services-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; gap: 36px; }
+    .trust-bar-inner { justify-content: center; text-align: center; }
+    .expertise-item { flex-direction: column; align-items: flex-start; gap: 6px; }
+    .expertise-item span { text-align: left; max-width: none; }
+    .trust-cards { grid-template-columns: 1fr; }
+    .section { padding: 70px 0; }
+  }
+</style>
 </head>
 <body>
 
-  <!-- ============ SCROLL PROGRESS ============ -->
-  <div class="scroll-progress" id="scroll-progress"></div>
+<!-- ============ NAV ============ -->
+<nav class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="#top" class="nav-logo">NetHauls<span>.</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#difference">Why Us</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#service-area">Service Area</a></li>
+      <li><a href="#contact" class="nav-cta">Get a Quote</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
 
-  <!-- ============ NAVIGATION ============ -->
-  <header class="site-header" id="site-header">
-    <nav class="navbar" aria-label="Main navigation">
-      <a href="#" class="nav-brand">
-        <svg class="logo-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-          <circle cx="20" cy="20" r="18.5" stroke="#2E8FD4" stroke-width="1.5"/>
-          <path d="M9 14L20 9L31 14" stroke="#8C95A8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M9 14V26L20 31L31 26V14" stroke="#8C95A8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M14.5 19.5L18.5 23.5L26 15" stroke="#2E8FD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <span class="nav-brand-text">
-          <span class="brand-name">NetHauls</span>
-          <span class="brand-sub">Maine's Junk Removal &amp; Cash Back Service</span>
-        </span>
-      </a>
-
-      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
-      </button>
-
-      <div class="nav-links" id="nav-links">
-        <a href="#services">Buying &amp; Pricing</a>
-        <a href="#how-it-works">How It Works</a>
-        <a href="#about">About</a>
-        <a href="#service-area">Service Area</a>
-        <a href="#contact" class="nav-cta">Get a Quote</a>
+<!-- ============ HERO ============ -->
+<header class="hero" id="top">
+  <div class="hero-glow hero-glow-1" data-parallax="0.15"></div>
+  <div class="hero-glow hero-glow-2" data-parallax="0.08"></div>
+  <div class="container hero-inner">
+    <div>
+      <p class="hero-eyebrow">Kennebunk, ME &middot; Serving All of York County</p>
+      <h1 id="heroHeadline">We pay for what's <span class="accent">valuable</span>.<br>Haul the rest.</h1>
+      <p class="hero-sub">Before anything goes on the truck, we look at what you've got. If it has resale value, we make you a cash offer on the spot. Then we clear out everything else &mdash; fast, clean, and done right.</p>
+      <div class="hero-ctas">
+        <a href="#contact" class="btn btn-primary">Get a Free Quote</a>
+        <a href="tel:+12074686998" class="btn btn-ghost">Call (207) 468-6998</a>
       </div>
-    </nav>
-  </header>
-
-  <main>
-
-    <!-- ============ HERO ============ -->
-    <section class="hero">
-      <div class="hero-grid" aria-hidden="true"></div>
-      <div class="hero-aurora" aria-hidden="true"></div>
-      <div class="hero-glow hero-glow-2" aria-hidden="true"></div>
-      <div class="grain-overlay" aria-hidden="true"></div>
-      <div class="hero-inner">
-        <div class="hero-text">
-          <p class="eyebrow fade-in-up" style="animation-delay: 0.05s;">Serving All of Maine</p>
-          <div class="hero-badge fade-in-up" style="animation-delay: 0.1s;">
-            <span>Cash Buying Program</span>
-            <span class="hero-badge-divider" aria-hidden="true"></span>
-            <span>Property Clearing &amp; Removal</span>
-          </div>
-          <h1 class="fade-in-up" style="animation-delay: 0.15s;">We clear properties.<br>You <span class="text-gradient">profit</span> from what's inside.</h1>
-          <p class="hero-sub fade-in-up" style="animation-delay: 0.25s;">NetHauls walks every property first and pays cash on the spot for anything with resale value, then clears the rest. Estate cleanouts, full property clears, single-item pickups, same-day service. Based in Kennebunk and traveling statewide, with a fuel surcharge for longer trips factored right into your quote based on distance and load size.</p>
-          <div class="hero-ctas fade-in-up" style="animation-delay: 0.35s;">
-            <a href="#contact" class="btn btn-primary">Get a Free Quote</a>
-            <a href="tel:+12075550188" class="btn btn-ghost">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-              (207) 555-0188
-            </a>
-          </div>
-        </div>
-
-        <div class="hero-stats">
-          <div class="stat-card fade-in-up" style="animation-delay: 0.3s;">
-            <div class="stat-card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-            </div>
-            <h3>Buying Program First</h3>
-            <p>Before anything is loaded, we make cash offers on items of value. Most customers see real money come back at a typical clear-out.</p>
-          </div>
-          <div class="stat-card fade-in-up" style="animation-delay: 0.4s;">
-            <div class="stat-card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            </div>
-            <h3>Licensed &amp; Insured</h3>
-            <p>NetHauls LLC is a registered Maine business with $1M general liability coverage. Signed work order on every job.</p>
-          </div>
-          <div class="stat-card fade-in-up" style="animation-delay: 0.5s;">
-            <div class="stat-card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            </div>
-            <h3>All of Maine, Door to Door</h3>
-            <p>Rooted in Kennebunk and traveling statewide. Trips outside York County include a fair fuel surcharge based on distance and load size, included in your upfront quote.</p>
-          </div>
-        </div>
+      <div class="hero-trustline">
+        <span><strong>Licensed</strong> Maine LLC</span>
+        <span><strong>$1M</strong> liability insured</span>
+        <span><strong>Same-day</strong> scheduling available</span>
       </div>
-
-      <a href="#services" class="scroll-cue" aria-label="Scroll to services">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="4" x2="12" y2="20"/><polyline points="6 14 12 20 18 14"/></svg>
-      </a>
-    </section>
-
-    <!-- ============ TRUST BAR ============ -->
-    <section class="trust-bar" aria-label="Company highlights">
-      <div class="trust-inner">
-        <div class="trust-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          <span>Licensed &amp; Insured LLC</span>
-        </div>
-        <div class="trust-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          <span>Same-Day Scheduling</span>
-        </div>
-        <div class="trust-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-          <span>Cash Paid Up Front</span>
-        </div>
-        <div class="trust-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          <span>Serving All of Maine</span>
-        </div>
-        <div class="trust-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-          <span>Estate Clearing Specialists</span>
-        </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-card reveal reveal-delay-1">
+        <div class="stat-num">First</div>
+        <div class="stat-label">We assess what's worth something before any work begins &mdash; no obligation</div>
       </div>
-    </section>
-
-    <!-- ============ THE DIFFERENCE ============ -->
-    <section class="difference">
-      <div class="container">
-        <div class="reveal">
-          <p class="eyebrow eyebrow-dark">Why NetHauls</p>
-          <h2>Other haulers clear everything out. We look first, then <span class="text-gradient-dark">pay you</span> for what's worth keeping.</h2>
-          <p class="section-body">No other property clearing company in the region walks a property and makes cash offers before anything moves. That buying-first approach is what makes a clear-out cost less and pay more.</p>
-        </div>
-
-        <div class="comparison-grid">
-          <div class="comparison-col comparison-other reveal">
-            <h3>Other haulers</h3>
-            <ul>
-              <li><span class="icon-x" aria-hidden="true">&#10005;</span> Remove everything regardless of value</li>
-              <li><span class="icon-x" aria-hidden="true">&#10005;</span> You pay full rate on belongings worth real money</li>
-              <li><span class="icon-x" aria-hidden="true">&#10005;</span> No expertise in what's actually valuable</li>
-              <li><span class="icon-x" aria-hidden="true">&#10005;</span> Franchise pricing: $600&ndash;$1,100 per load, no offset</li>
-              <li><span class="icon-x" aria-hidden="true">&#10005;</span> No local relationship or accountability</li>
-            </ul>
-          </div>
-          <div class="comparison-col comparison-mnc reveal" style="transition-delay: 0.1s;">
-            <h3>NetHauls</h3>
-            <ul>
-              <li><span class="icon-check" aria-hidden="true">&#10003;</span> Buy items of value first, cash directly to you</li>
-              <li><span class="icon-check" aria-hidden="true">&#10003;</span> Purchase amount comes off your clearing cost</li>
-              <li><span class="icon-check" aria-hidden="true">&#10003;</span> Experienced buyers with deep knowledge of resale markets</li>
-              <li><span class="icon-check" aria-hidden="true">&#10003;</span> Transparent pricing, signed agreement, no hidden fees</li>
-              <li><span class="icon-check" aria-hidden="true">&#10003;</span> Kennebunk-rooted, fully accountable, locally known</li>
-            </ul>
-          </div>
-        </div>
+      <div class="stat-card reveal reveal-delay-2">
+        <div class="stat-num">Cash</div>
+        <div class="stat-label">Paid on the spot for anything with resale value, before loadout starts</div>
       </div>
-    </section>
-
-    <!-- ============ SERVICES / BUYING PROGRAM ============ -->
-    <section class="services" id="services">
-      <div class="container">
-        <div class="reveal">
-          <p class="eyebrow eyebrow-dark">What we do</p>
-          <h2>Cash Buying Program &amp; Property Clearing Pricing</h2>
-          <p class="section-body">Every job starts the same way: a free walkthrough and a cash offer for anything with resale value, tools, furniture, collectibles, antiques, and more. What we buy comes off your bill on the spot. Then we handle the property clearing, sized to fit any job.</p>
-        </div>
-
-        <div class="services-grid">
-          <div class="service-card service-featured reveal">
-            <span class="badge">Our Differentiator</span>
-            <div class="service-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-            </div>
-            <h3>Cash Buying Program</h3>
-            <p class="service-price">Cash paid before we clear anything</p>
-            <p>Before we move a single item, we walk the property and make cash offers on anything with resale value: tools, furniture, collectibles, antiques, electronics, and more. What we buy comes directly off your clearing cost.</p>
-          </div>
-
-          <div class="service-card reveal" style="transition-delay: 0.05s;">
-            <div class="service-icon service-icon-outline">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
-            </div>
-            <h3>Single Item</h3>
-            <p class="service-price">$50&ndash;$90</p>
-            <p>One piece of furniture, an appliance, or an oversized item. Staircase surcharge applies.</p>
-          </div>
-
-          <div class="service-card reveal" style="transition-delay: 0.1s;">
-            <div class="service-icon service-icon-outline">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
-            </div>
-            <h3>Small Load (1/4 trailer)</h3>
-            <p class="service-price">$150&ndash;$225</p>
-            <p>3&ndash;5 medium items or about 200 lbs. Perfect for a single room or overflow.</p>
-          </div>
-
-          <div class="service-card reveal" style="transition-delay: 0.15s;">
-            <div class="service-icon service-icon-outline">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="7"/><rect x="12" y="7" width="3" height="11"/><rect x="17" y="13" width="3" height="5"/></svg>
-            </div>
-            <h3>Medium Load (1/2 trailer)</h3>
-            <p class="service-price">$275&ndash;$375</p>
-            <p>Standard single-room or basement clear-out. Most common job size.</p>
-          </div>
-
-          <div class="service-card reveal" style="transition-delay: 0.2s;">
-            <div class="service-icon service-icon-outline">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="6" width="15" height="12" rx="1"/><path d="M16 10h3l3 3v3h-6z"/><circle cx="5.5" cy="18.5" r="1.5"/><circle cx="17.5" cy="18.5" r="1.5"/></svg>
-            </div>
-            <h3>Full Load (full trailer)</h3>
-            <p class="service-price">$450&ndash;$625</p>
-            <p>Full trailer capacity, up to 2,000 lbs. Large garage or full basement.</p>
-          </div>
-
-          <div class="service-card reveal" style="transition-delay: 0.25s;">
-            <div class="service-icon service-icon-outline">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-            </div>
-            <h3>Estate &amp; Full Property Clear</h3>
-            <p class="service-price">$800&ndash;$3,500+</p>
-            <p>Whole-property clearing for estates, downsizing, foreclosures, and listing prep. Quoted by walkthrough. The buying program often significantly offsets the cost.</p>
-          </div>
-        </div>
+      <div class="stat-card reveal reveal-delay-3">
+        <div class="stat-num">York Co.</div>
+        <div class="stat-label">Based in Kennebunk, working all eighteen towns across the county</div>
       </div>
-    </section>
+    </div>
+  </div>
+</header>
 
-    <!-- ============ HOW IT WORKS ============ -->
-    <section class="how-it-works" id="how-it-works">
-      <div class="grain-overlay" aria-hidden="true"></div>
-      <div class="container">
-        <div class="reveal">
-          <p class="eyebrow">The process</p>
-          <h2 class="heading-light">Three steps. Property cleared, money in your pocket.</h2>
-        </div>
+<!-- ============ TRUST BAR ============ -->
+<section class="trust-bar">
+  <div class="container trust-bar-inner">
+    <div class="trust-item reveal">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+      Licensed Maine LLC
+    </div>
+    <div class="trust-item reveal reveal-delay-1">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      $1M Liability Insured
+    </div>
+    <div class="trust-item reveal reveal-delay-2">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      Same-Day Scheduling
+    </div>
+    <div class="trust-item reveal reveal-delay-3">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 10h20"/></svg>
+      Cash Paid On-Site
+    </div>
+    <div class="trust-item reveal reveal-delay-4">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      York County Based
+    </div>
+  </div>
+</section>
 
-        <div class="steps-grid">
-          <div class="step-panel reveal">
-            <span class="step-number" aria-hidden="true">01</span>
-            <h3>Call, text, or book online</h3>
-            <p>Tell us what's there: a few sentences or photos. We confirm a time, usually same-day or next-day, and give you a ballpark quote upfront.</p>
-          </div>
-          <div class="step-arrow" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </div>
-          <div class="step-panel reveal" style="transition-delay: 0.1s;">
-            <span class="step-number" aria-hidden="true">02</span>
-            <h3>We arrive, assess, and pay you</h3>
-            <p>We walk the property, identify anything with resale value, and put a cash offer on the table before a single item moves. Accept or decline, no obligation.</p>
-          </div>
-          <div class="step-arrow" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </div>
-          <div class="step-panel reveal" style="transition-delay: 0.2s;">
-            <span class="step-number" aria-hidden="true">03</span>
-            <h3>Everything cleared, done</h3>
-            <p>We load, haul, and handle disposal of the rest. You get before and after photo documentation, a signed receipt, and a clear property. Payment on completion.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ ABOUT / WHY US ============ -->
-    <section class="about" id="about">
-      <div class="container about-grid">
-        <div class="about-text reveal">
-          <p class="eyebrow eyebrow-dark">Local expertise</p>
-          <h2>We know what things are worth. Most haulers don't.</h2>
-          <p class="section-body">The buying program only works if the buyer actually knows what's valuable. We do, with hands-on experience across the categories that come up most at estate clear-outs and property clearing jobs across Maine.</p>
-          <p class="section-body">That expertise means your good belongings go to buyers who want them, not into a dumpster, and money comes back to you.</p>
-
-          <div class="expertise-strips">
-            <span class="expertise-strip">Tools &amp; Equipment</span>
-            <span class="expertise-strip">Collectibles &amp; Trading Cards</span>
-            <span class="expertise-strip">Furniture &amp; Antiques</span>
-            <span class="expertise-strip">Electronics &amp; Vintage Audio</span>
-            <span class="expertise-strip">Sporting Goods &amp; More</span>
-          </div>
-        </div>
-
-        <div class="trust-cards">
-          <div class="trust-card reveal">
-            <div class="trust-card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            </div>
-            <h3>Licensed Maine LLC</h3>
-            <p>Registered with the Maine Secretary of State. Signed work order on every single job.</p>
-          </div>
-          <div class="trust-card reveal" style="transition-delay: 0.05s;">
-            <div class="trust-card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            </div>
-            <h3>$1M Insured</h3>
-            <p>Full general liability coverage. Certificate available on request.</p>
-          </div>
-          <div class="trust-card reveal" style="transition-delay: 0.1s;">
-            <div class="trust-card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
-            </div>
-            <h3>Clear Documentation</h3>
-            <p>Itemized bill of sale for every purchase. Before and after photos on every job.</p>
-          </div>
-          <div class="trust-card reveal" style="transition-delay: 0.15s;">
-            <div class="trust-card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            </div>
-            <h3>Agent Referral Program</h3>
-            <p>Real estate agents: $50 per completed job referral. We handle listing prep and estate clearing.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ AGENT CALLOUT ============ -->
-    <section class="agent-callout">
-      <div class="agent-glow" aria-hidden="true"></div>
-      <div class="grain-overlay" aria-hidden="true"></div>
-      <div class="agent-inner reveal">
-        <p class="eyebrow eyebrow-light">For real estate professionals</p>
-        <h2 class="heading-light">Your sellers need it cleared. We make one call the answer.</h2>
-        <p class="section-body section-body-light">Estate clear-outs, listing prep, foreclosure clearing: all handled with documentation, insurance, and reliability. Your clients often walk away with cash from the buying program.</p>
-
-        <div class="agent-stats">
-          <div class="agent-stat">
-            <span class="agent-stat-num"><span class="count-up" data-prefix="$" data-target="50">0</span></span>
-            <span class="agent-stat-label">per completed referral</span>
-          </div>
-          <div class="agent-stat">
-            <span class="agent-stat-num"><span class="count-up" data-suffix="hr" data-target="24">0</span></span>
-            <span class="agent-stat-label">typical scheduling window</span>
-          </div>
-          <div class="agent-stat">
-            <span class="agent-stat-num"><span class="count-up" data-suffix="%" data-target="100">0</span></span>
-            <span class="agent-stat-label">insured &amp; documented</span>
-          </div>
-        </div>
-
-        <a href="tel:+12075550188" class="agent-link">Call to set up a referral arrangement &rarr;</a>
-      </div>
-    </section>
-
-    <!-- ============ SERVICE AREA ============ -->
-    <section class="service-area" id="service-area">
-      <div class="container">
-        <div class="reveal">
-          <p class="eyebrow eyebrow-dark">Where we work</p>
-          <h2>Now Serving All of Maine</h2>
-          <p class="section-body">Based in Kennebunk, with no-surcharge service across York County and Southern Maine, plus statewide trips up the coast and inland to Augusta, Bangor, and beyond.</p>
-        </div>
-
-        <div class="town-tags reveal" style="transition-delay: 0.1s;">
-          <span class="town-tag town-tag-primary">Kennebunk</span>
-          <span class="town-tag town-tag-primary">Kennebunkport</span>
-          <span class="town-tag">Biddeford</span>
-          <span class="town-tag">Saco</span>
-          <span class="town-tag">Wells</span>
-          <span class="town-tag">Ogunquit</span>
-          <span class="town-tag">York</span>
-          <span class="town-tag">York Beach</span>
-          <span class="town-tag">Old Orchard Beach</span>
-          <span class="town-tag">Scarborough</span>
-          <span class="town-tag">Sanford</span>
-          <span class="town-tag">South Berwick</span>
-          <span class="town-tag">Eliot</span>
-          <span class="town-tag">Kittery</span>
-          <span class="town-tag">Arundel</span>
-          <span class="town-tag">Buxton</span>
-          <span class="town-tag">Waterboro</span>
-          <span class="town-tag">Dayton</span>
-          <span class="town-tag">Portland</span>
-          <span class="town-tag">Westbrook</span>
-          <span class="town-tag">Gorham</span>
-          <span class="town-tag">Brunswick</span>
-          <span class="town-tag">Lewiston</span>
-          <span class="town-tag">Augusta</span>
-          <span class="town-tag">Bangor</span>
-          <span class="town-tag">Rest of Maine</span>
-        </div>
-
-        <div class="fuel-note reveal" style="transition-delay: 0.15s;">
-          <div class="fuel-note-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="22" x2="15" y2="22"/><line x1="4" y1="9" x2="14" y2="9"/><path d="M4 22V4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v18"/><path d="M14 9h2a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2v0a2 2 0 0 0 2-2V9.83a2 2 0 0 0-.59-1.42L18 5"/></svg>
-          </div>
-          <div>
-            <h3>Traveling outside York County?</h3>
-            <p>Jobs within York County and Southern Maine carry no extra travel cost. For longer trips up the coast or inland, your quote includes a straightforward fuel surcharge based on distance and load size, calculated upfront with no surprises on the day of the job.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ CONTACT / QUOTE FORM ============ -->
-    <section class="contact" id="contact">
-      <div class="container contact-grid">
-        <div class="contact-info reveal">
-          <p class="eyebrow eyebrow-dark">Get in touch</p>
-          <h2>Request a free quote</h2>
-          <p class="section-body">Fill out the form and we'll respond within a few hours. Most jobs scheduled same-day or next-day. Prefer to call? We pick up.</p>
-
-          <div class="contact-items">
-            <a href="tel:+12075550188" class="contact-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-              <span>(207) 555-0188</span>
-            </a>
-            <a href="mailto:info@nethauls.com" class="contact-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-              <span>info@nethauls.com</span>
-            </a>
-            <a href="https://instagram.com/nethauls" class="contact-item" target="_blank" rel="noopener noreferrer">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-              <span>@nethauls</span>
-            </a>
-          </div>
-        </div>
-
-        <div class="contact-form-wrap reveal" style="transition-delay: 0.1s;">
-          <div class="contact-form-card">
-            <h3>Free Quote Request</h3>
-
-            <!--
-              FORMSPREE SETUP:
-              1. Create a free account at https://formspree.io
-              2. Create a new form and copy your unique form ID
-              3. Replace "YOURFORMCODE" in the form action URL below with your form ID
-                 example: action="https://formspree.io/f/abcd1234"
-            -->
-            <form id="quote-form" class="quote-form" action="https://formspree.io/f/YOURFORMCODE" method="POST">
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="first-name">First Name</label>
-                  <input type="text" id="first-name" name="first_name" required>
-                </div>
-                <div class="form-group">
-                  <label for="last-name">Last Name</label>
-                  <input type="text" id="last-name" name="last_name" required>
-                </div>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="phone">Phone</label>
-                  <input type="tel" id="phone" name="phone" required>
-                </div>
-                <div class="form-group">
-                  <label for="email">Email</label>
-                  <input type="email" id="email" name="email" required>
-                </div>
-              </div>
-
-              <div class="form-group form-group-full">
-                <label for="address">Property Address</label>
-                <input type="text" id="address" name="address" required>
-              </div>
-
-              <div class="form-group form-group-full">
-                <label for="job-type">Job Type</label>
-                <select id="job-type" name="job_type" required>
-                  <option value="" disabled selected>Select a job type</option>
-                  <option value="Single Item">Single Item</option>
-                  <option value="Small Load">Small Load</option>
-                  <option value="Medium Load">Medium Load</option>
-                  <option value="Full Load">Full Load</option>
-                  <option value="Estate/Full Property Clear">Estate/Full Property Clear</option>
-                  <option value="Garage or Basement Clear-Out">Garage or Basement Clear-Out</option>
-                  <option value="Foreclosure/Vacant Property">Foreclosure/Vacant Property</option>
-                  <option value="Not Sure, Need a Walkthrough">Not Sure, Need a Walkthrough</option>
-                </select>
-              </div>
-
-              <div class="form-group form-group-full">
-                <label for="description">Describe what needs to go</label>
-                <textarea id="description" name="description" rows="5" required></textarea>
-              </div>
-
-              <button type="submit" class="btn btn-submit">Send Quote Request &rarr;</button>
-              <p class="form-note">We typically respond within 2&ndash;4 hours. No spam, ever.</p>
-            </form>
-
-            <div id="form-success" class="form-success" hidden>
-              <h3>Thanks, request received.</h3>
-              <p>We'll be in touch within a few hours to confirm your free quote and schedule a time. If your request is urgent, call us at <a href="tel:+12075550188">(207) 555-0188</a>.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- ============ FOOTER ============ -->
-  <footer class="site-footer">
-    <div class="container footer-grid">
-      <div class="footer-col footer-brand">
-        <span class="brand-name">NetHauls</span>
-        <p class="footer-tagline">We see the value. You get paid.</p>
-        <p class="footer-desc">Maine's junk removal and cash back service. Based in Kennebunk, serving the entire state. Licensed LLC, fully insured, cash paid up front for anything with resale value.</p>
-      </div>
-
-      <div class="footer-col">
-        <h4>Services</h4>
-        <ul>
-          <li><a href="#services">Cash Buying Program</a></li>
-          <li><a href="#services">Single Item</a></li>
-          <li><a href="#services">Full Load</a></li>
-          <li><a href="#services">Estate Clear</a></li>
-          <li><a href="#about">Agent Referrals</a></li>
+<!-- ============ DIFFERENCE ============ -->
+<section class="section" id="difference">
+  <div class="container">
+    <div class="section-head center">
+      <p class="eyebrow">The Difference</p>
+      <h2>Most haulers see a truckload. We see what's still worth something.</h2>
+      <p>Every other company in York County looks at your property and quotes you a flat removal price. We look first &mdash; and if there's value in there, that value comes back to you in cash before we ever load the truck.</p>
+    </div>
+    <div class="diff-grid">
+      <div class="diff-card them reveal">
+        <h3>The usual approach</h3>
+        <ul class="diff-list">
+          <li><span class="diff-icon">&times;</span>Quotes a flat price based on volume alone, no second look</li>
+          <li><span class="diff-icon">&times;</span>Anything of value gets hauled off with everything else</li>
+          <li><span class="diff-icon">&times;</span>You never see a dime back, no matter what was in the load</li>
+          <li><span class="diff-icon">&times;</span>Crews show up without knowing what they're walking into</li>
+          <li><span class="diff-icon">&times;</span>Scheduling windows measured in weeks, not days</li>
         </ul>
       </div>
+      <div class="diff-card us reveal reveal-delay-2">
+        <h3>How NetHauls works</h3>
+        <ul class="diff-list">
+          <li><span class="diff-icon">&check;</span>We walk the space first and identify anything with resale value</li>
+          <li><span class="diff-icon">&check;</span>You get a cash offer on the spot &mdash; before any work starts</li>
+          <li><span class="diff-icon">&check;</span>Take the cash, decline it, no pressure either way</li>
+          <li><span class="diff-icon">&check;</span>Then we clear the rest, swept and ready to use again</li>
+          <li><span class="diff-icon">&check;</span>Often scheduled within a day or two, not weeks out</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
 
+<!-- ============ SERVICES & PRICING ============ -->
+<section class="section" id="services" style="background: var(--off-white);">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Services &amp; Pricing</p>
+      <h2>Straightforward pricing. No surprise add-ons.</h2>
+      <p>Every job starts with the buying program walkthrough at no cost. Removal pricing below reflects typical jobs across York County &mdash; your final price depends on volume, access, and what comes off the top in cash.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card featured reveal">
+        <span class="badge">Leads Every Job</span>
+        <h3>On-Site Buying Program</h3>
+        <div class="price">Cash, on the spot</div>
+        <p>Before we quote removal, we walk the property and identify anything with resale value &mdash; furniture, equipment, collectibles, metals, and more. If it's worth something, we make an offer right there.</p>
+        <ul>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>No appraisal fee, no obligation to accept</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Cash paid before any loading begins</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Offers based on real resale value, not guesswork</li>
+        </ul>
+      </div>
+      <div class="service-card reveal reveal-delay-1">
+        <h3>Single Item Pickup</h3>
+        <div class="price">$50 &ndash; $90</div>
+        <p>One piece of furniture, an appliance, a mattress &mdash; in and gone within the hour.</p>
+        <ul>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Same-day availability in most of York County</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Two-person crew, no stairs problem too tight</li>
+        </ul>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <h3>Small Load</h3>
+        <div class="price">$150 &ndash; $225</div>
+        <p>A quarter truckload &mdash; a room's worth of furniture or a garage cleanout.</p>
+        <ul>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Typically wrapped up in under two hours</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>We sort for resale value as we load</li>
+        </ul>
+      </div>
+      <div class="service-card reveal reveal-delay-3">
+        <h3>Medium Load</h3>
+        <div class="price">$275 &ndash; $375</div>
+        <p>About half a truck &mdash; multiple rooms, a basement, or a small storage unit.</p>
+        <ul>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Crew of two to three depending on access</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Donation drop-off included where applicable</li>
+        </ul>
+      </div>
+      <div class="service-card reveal reveal-delay-4">
+        <h3>Full Load</h3>
+        <div class="price">$450 &ndash; $625</div>
+        <p>A full truck &mdash; whole-house cleanouts, garages, sheds, and yards.</p>
+        <ul>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Full crew, typically same-day completion</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Property left swept and broom-clean</li>
+        </ul>
+      </div>
+      <div class="service-card reveal reveal-delay-5">
+        <h3>Estate &amp; Full Property</h3>
+        <div class="price">$800 &ndash; $3,500+</div>
+        <p>Multi-room estates, full properties, or jobs spanning multiple days.</p>
+        <ul>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Dedicated walkthrough and written plan first</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Coordination with realtors and families</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section class="section how" id="how">
+  <div class="container">
+    <div class="section-head center on-dark">
+      <p class="eyebrow">How It Works</p>
+      <h2>Three steps. No surprises.</h2>
+    </div>
+    <div class="how-grid">
+      <div class="how-step reveal">
+        <div class="num">01</div>
+        <h3>We walk the space</h3>
+        <p>Call or book online and we'll set a time &mdash; often within a day or two. We walk through and look for anything with resale value before discussing removal at all.</p>
+      </div>
+      <div class="how-step reveal reveal-delay-2">
+        <div class="num">02</div>
+        <h3>You get a cash offer</h3>
+        <p>If we find items worth buying, we make an offer right there. No back-and-forth, no waiting on an appraisal. You decide on the spot, no pressure.</p>
+      </div>
+      <div class="how-step reveal reveal-delay-3">
+        <div class="num">03</div>
+        <h3>We clear the rest</h3>
+        <p>Once the buying side is settled, we load and remove everything else. Spaces are left swept and ready &mdash; whether that's a room, a garage, or a whole property.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT & EXPERTISE ============ -->
+<section class="section" id="about">
+  <div class="container about-grid">
+    <div>
+      <div class="section-head" style="margin-bottom: 40px;">
+        <p class="eyebrow">What We Know</p>
+        <h2>We know what things are worth.</h2>
+        <p>Years of buying, selling, and clearing property across York County means we recognize value fast &mdash; and price it fairly on the spot.</p>
+      </div>
+      <div class="expertise-list">
+        <div class="expertise-item reveal">
+          <h4>Furniture &amp; Antiques</h4>
+          <span class="expertise-num">01</span>
+        </div>
+        <div class="expertise-item reveal reveal-delay-1">
+          <h4>Tools &amp; Equipment</h4>
+          <span class="expertise-num">02</span>
+        </div>
+        <div class="expertise-item reveal reveal-delay-2">
+          <h4>Electronics &amp; Appliances</h4>
+          <span class="expertise-num">03</span>
+        </div>
+        <div class="expertise-item reveal reveal-delay-3">
+          <h4>Collectibles &amp; Specialty Items</h4>
+          <span class="expertise-num">04</span>
+        </div>
+        <div class="expertise-item reveal reveal-delay-4">
+          <h4>Outdoor &amp; Sporting Goods</h4>
+          <span class="expertise-num">05</span>
+        </div>
+      </div>
+    </div>
+    <div class="trust-cards">
+      <div class="trust-card reveal">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <h4>Fully Insured</h4>
+        <p>$1M general liability coverage on every job, residential or commercial.</p>
+      </div>
+      <div class="trust-card reveal reveal-delay-1">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+        <h4>Licensed Maine LLC</h4>
+        <p>Registered and operating legally throughout the state of Maine.</p>
+      </div>
+      <div class="trust-card reveal reveal-delay-2">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.1-2.8-2.8L7 14"/></svg>
+        <h4>Fair Market Offers</h4>
+        <p>Cash offers reflect real resale value, explained in plain terms before you decide.</p>
+      </div>
+      <div class="trust-card reveal reveal-delay-3">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <h4>Fast Turnaround</h4>
+        <p>Most jobs scheduled within one to two days of your first call.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AGENT REFERRAL CALLOUT ============ -->
+<section class="section agent-callout" id="agents">
+  <div class="container agent-inner">
+    <p class="eyebrow" style="justify-content:center;">For Realtors &amp; Property Managers</p>
+    <h2>Clearing a property before a showing or closing? We'll make it worth your while.</h2>
+    <p>Send us a property that needs clearing and we'll handle the buying program and removal &mdash; often the same week. Refer a client and earn a payout for every completed job.</p>
+    <div class="agent-stats">
+      <div class="agent-stat reveal">
+        <div class="num" data-count="50" data-prefix="$">$0</div>
+        <div class="label">Paid per completed referral</div>
+      </div>
+      <div class="agent-stat reveal reveal-delay-1">
+        <div class="num" data-count="24" data-suffix="hr">0hr</div>
+        <div class="label">Typical scheduling window</div>
+      </div>
+      <div class="agent-stat reveal reveal-delay-2">
+        <div class="num" data-count="100" data-suffix="%">0%</div>
+        <div class="label">Insured and documented for liability sign-off</div>
+      </div>
+    </div>
+    <a href="#contact" class="btn btn-primary">Partner With Us</a>
+  </div>
+</section>
+
+<!-- ============ SERVICE AREA ============ -->
+<section class="section section-tight" id="service-area" style="background: var(--off-white);">
+  <div class="container">
+    <div class="section-head center">
+      <p class="eyebrow">Service Area</p>
+      <h2>Based in Kennebunk. Working all of York County.</h2>
+      <p>If you're in one of these towns, we can typically be there within a day or two.</p>
+    </div>
+    <div class="area-pills">
+      <span class="area-pill reveal">Kennebunk</span>
+      <span class="area-pill reveal">Kennebunkport</span>
+      <span class="area-pill reveal">Biddeford</span>
+      <span class="area-pill reveal">Saco</span>
+      <span class="area-pill reveal">Wells</span>
+      <span class="area-pill reveal">Ogunquit</span>
+      <span class="area-pill reveal">York</span>
+      <span class="area-pill reveal">York Beach</span>
+      <span class="area-pill reveal">Cape Neddick</span>
+      <span class="area-pill reveal">Old Orchard Beach</span>
+      <span class="area-pill reveal">Sanford</span>
+      <span class="area-pill reveal">South Berwick</span>
+      <span class="area-pill reveal">Eliot</span>
+      <span class="area-pill reveal">Kittery</span>
+      <span class="area-pill reveal">Arundel</span>
+      <span class="area-pill reveal">Buxton</span>
+      <span class="area-pill reveal">Waterboro</span>
+      <span class="area-pill reveal">Dayton</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="section" id="contact">
+  <div class="container contact-grid">
+    <div class="contact-info reveal">
+      <p class="eyebrow">Get In Touch</p>
+      <h2>Tell us what you've got.</h2>
+      <p>Fill out the form or call us directly. We'll talk through what's there, give you a sense of value, and get you on the schedule.</p>
+      <div class="contact-detail">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <div>
+          <h4>Phone</h4>
+          <a href="tel:+12074686998">(207) 468-6998</a>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
+        <div>
+          <h4>Email</h4>
+          <a href="mailto:info@nethauls.com">info@nethauls.com</a>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        <div>
+          <h4>Instagram</h4>
+          <a href="https://instagram.com/nethauls" target="_blank" rel="noopener">@nethauls</a>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <div>
+          <h4>Based In</h4>
+          <p>Kennebunk, ME &mdash; serving all of York County</p>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      FORMSPREE SETUP:
+      1. Create a free form at https://formspree.io
+      2. Replace YOURFORMCODE below in the form action URL with your actual Formspree form ID
+         (e.g. action="https://formspree.io/f/abcd1234")
+      3. Submissions will be emailed to the address you set up in your Formspree dashboard
+    -->
+    <form class="form-card reveal reveal-delay-1" action="https://formspree.io/f/YOURFORMCODE" method="POST">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" placeholder="Your name" required>
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone</label>
+          <input type="tel" id="phone" name="phone" placeholder="(207) 555-0100" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" required>
+      </div>
+      <div class="form-group">
+        <label for="town">Town</label>
+        <select id="town" name="town" required>
+          <option value="" disabled selected>Select your town</option>
+          <option>Kennebunk</option>
+          <option>Kennebunkport</option>
+          <option>Biddeford</option>
+          <option>Saco</option>
+          <option>Wells</option>
+          <option>Ogunquit</option>
+          <option>York</option>
+          <option>York Beach</option>
+          <option>Cape Neddick</option>
+          <option>Old Orchard Beach</option>
+          <option>Sanford</option>
+          <option>South Berwick</option>
+          <option>Eliot</option>
+          <option>Kittery</option>
+          <option>Arundel</option>
+          <option>Buxton</option>
+          <option>Waterboro</option>
+          <option>Dayton</option>
+          <option>Other / Not Listed</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="details">What do you need cleared, and is there anything you think might be valuable?</label>
+        <textarea id="details" name="details" placeholder="Tell us about the space, what's in it, and any timeline you're working with."></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary form-submit">Send My Request</button>
+    </form>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">NetHauls<span>.</span></div>
+        <p>We pay for what's valuable, then haul the rest. Based in Kennebunk, Maine, serving every town in York County.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Site</h4>
+        <ul>
+          <li><a href="#difference">Why Us</a></li>
+          <li><a href="#services">Services &amp; Pricing</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#service-area">Service Area</a></li>
+          <li><a href="#contact">Get a Quote</a></li>
+        </ul>
+      </div>
       <div class="footer-col">
         <h4>Contact</h4>
         <ul>
-          <li><a href="tel:+12075550188">(207) 555-0188</a></li>
+          <li><a href="tel:+12074686998">(207) 468-6998</a></li>
           <li><a href="mailto:info@nethauls.com">info@nethauls.com</a></li>
-          <li>
-            <a href="https://instagram.com/nethauls" target="_blank" rel="noopener noreferrer" class="footer-social">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-              @nethauls
-            </a>
-          </li>
-          <li><a href="#contact">Request a Quote</a></li>
+          <li><a href="https://instagram.com/nethauls" target="_blank" rel="noopener">@nethauls</a></li>
+          <li><a href="#" style="cursor:default;">Kennebunk, ME</a></li>
         </ul>
       </div>
     </div>
-
-    <div class="container footer-bottom">
-      <p>&copy; 2026 NetHauls LLC, Kennebunk, ME 04043. All rights reserved.</p>
-      <p>Licensed Maine LLC &middot; General Liability Insured</p>
+    <div class="footer-bottom">
+      <span>&copy; <span id="year"></span> NetHauls LLC. All rights reserved.</span>
+      <span>Licensed &amp; Insured Maine LLC</span>
     </div>
-  </footer>
-
-  <button id="back-to-top" class="back-to-top" aria-label="Back to top">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
-  </button>
-
-  <!-- ============ MOBILE STICKY CALL BAR ============ -->
-  <div class="mobile-cta-bar" role="region" aria-label="Quick contact">
-    <a href="tel:+12075550188" class="mobile-cta-btn mobile-cta-call">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-      Call Now
-    </a>
-    <a href="#contact" class="mobile-cta-btn mobile-cta-quote">Get a Free Quote</a>
   </div>
+</footer>
 
-  <script src="script.js"></script>
+<script>
+  // Year
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Nav scroll state
+  const nav = document.getElementById('nav');
+  function onScroll() {
+    if (window.scrollY > 40) nav.classList.add('is-scrolled');
+    else nav.classList.remove('is-scrolled');
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Mobile nav toggle
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => {
+    const isOpen = navLinks.classList.toggle('is-open');
+    navToggle.classList.toggle('is-active', isOpen);
+    navToggle.setAttribute('aria-expanded', isOpen);
+  });
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('is-open');
+      navToggle.classList.remove('is-active');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // Scroll reveal via IntersectionObserver
+  const revealEls = document.querySelectorAll('.reveal');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  revealEls.forEach(el => revealObserver.observe(el));
+
+  // Count-up stats
+  const countEls = document.querySelectorAll('[data-count]');
+  const countObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      const target = parseInt(el.getAttribute('data-count'), 10);
+      const prefix = el.getAttribute('data-prefix') || '';
+      const suffix = el.getAttribute('data-suffix') || '';
+      const duration = 1200;
+      const start = performance.now();
+      function tick(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const value = Math.round(target * eased);
+        el.textContent = prefix + value + suffix;
+        if (progress < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+      countObserver.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  countEls.forEach(el => countObserver.observe(el));
+
+  // Subtle parallax on hero glows
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduceMotion) {
+    const parallaxEls = document.querySelectorAll('[data-parallax]');
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const scrollY = window.scrollY;
+        parallaxEls.forEach(el => {
+          const rate = parseFloat(el.getAttribute('data-parallax'));
+          el.style.transform = `translateY(${scrollY * rate}px)`;
+        });
+        ticking = false;
+      });
+    }, { passive: true });
+  }
+</script>
+
 </body>
 </html>
