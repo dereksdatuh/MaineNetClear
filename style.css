@@ -1,5 +1,5 @@
 /* ============================================
-   Maine Net Clear LLC — Stylesheet
+   Maine Net Clear LLC: Stylesheet
    ============================================ */
 
 :root {
@@ -235,8 +235,20 @@ h2 {
 
 .nav-brand {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 12px;
   line-height: 1.2;
+}
+
+.logo-mark {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+}
+
+.nav-brand-text {
+  display: flex;
+  flex-direction: column;
 }
 
 .brand-name {
@@ -403,6 +415,27 @@ h2 {
   grid-template-columns: 1.2fr 1fr;
   gap: 60px;
   align-items: center;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(59, 143, 212, 0.08);
+  border: 1px solid rgba(59, 143, 212, 0.25);
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--blue-light);
+  margin-bottom: 22px;
+}
+
+.hero-badge-divider {
+  width: 1px;
+  height: 12px;
+  background: rgba(186, 217, 245, 0.3);
 }
 
 .hero-text h1 {
@@ -994,6 +1027,80 @@ h2 {
   background: var(--dark);
 }
 
+/* ============ FAQ ============ */
+.faq {
+  background: var(--off-white);
+  padding: 100px 0;
+}
+
+.faq-list {
+  max-width: 760px;
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.faq-item {
+  background: var(--white);
+  border: 1px solid var(--silver-light);
+  border-radius: 12px;
+  padding: 22px 28px;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.faq-item[open] {
+  border-color: var(--blue-light);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+}
+
+.faq-item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--dark);
+  list-style: none;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--blue-pale);
+  color: var(--blue-mid);
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
+}
+
+.faq-icon svg {
+  width: 14px;
+  height: 14px;
+}
+
+.faq-item[open] .faq-icon {
+  transform: rotate(180deg);
+}
+
+.faq-item p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--silver-dark);
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--off-white);
+}
+
 /* ============ CONTACT ============ */
 .contact {
   background: var(--off-white);
@@ -1222,6 +1329,11 @@ h2 {
   height: 18px;
 }
 
+/* ============ MOBILE STICKY CTA BAR ============ */
+.mobile-cta-bar {
+  display: none;
+}
+
 .footer-bottom {
   border-top: 1px solid rgba(255, 255, 255, 0.06);
   padding-top: 24px;
@@ -1356,6 +1468,58 @@ h2 {
   .footer-bottom {
     flex-direction: column;
     text-align: center;
+  }
+
+  .mobile-cta-bar {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 950;
+    background: rgba(10, 10, 10, 0.97);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .mobile-cta-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .mobile-cta-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .mobile-cta-call {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--white);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .mobile-cta-quote {
+    background: var(--blue-mid);
+    color: var(--white);
+  }
+
+  .back-to-top {
+    bottom: 84px;
+  }
+
+  body {
+    padding-bottom: 70px;
   }
 }
 

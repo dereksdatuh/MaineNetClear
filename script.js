@@ -1,5 +1,5 @@
 // ============================================
-// Maine Net Clear LLC — Site Scripts
+// Maine Net Clear LLC: Site Scripts
 // ============================================
 
 document.addEventListener('DOMContentLoaded', function () {
