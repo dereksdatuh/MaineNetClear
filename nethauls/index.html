@@ -272,6 +272,18 @@
     background: radial-gradient(ellipse 400px 300px at 100% 0%, rgba(114,184,232,0.25), transparent 60%);
     pointer-events: none;
   }
+  .cash-fx { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+  .cash-fx span {
+    position: absolute; bottom: -10%; font-family: var(--serif); font-weight: 700;
+    color: rgba(114,184,232,0.4); text-shadow: 0 0 10px rgba(114,184,232,0.35);
+    animation: floatCash 9s linear infinite;
+  }
+  @keyframes floatCash {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+    8% { opacity: 1; }
+    85% { opacity: 1; }
+    100% { transform: translateY(-420px) rotate(18deg); opacity: 0; }
+  }
   .service-card.featured h3, .service-card.featured .price { color: var(--white); position: relative; z-index: 1; }
   .service-card.featured .price { color: var(--blue-light); }
   .service-card.featured p { color: var(--silver-light); position: relative; z-index: 1; }
@@ -536,6 +548,14 @@
     </div>
     <div class="services-grid">
       <div class="service-card featured reveal">
+        <div class="cash-fx" aria-hidden="true">
+          <span style="left:8%; font-size:1.3rem; animation-delay:0s;">$</span>
+          <span style="left:24%; font-size:0.95rem; animation-delay:1.8s;">$</span>
+          <span style="left:42%; font-size:1.6rem; animation-delay:3.4s;">$</span>
+          <span style="left:60%; font-size:1.05rem; animation-delay:0.9s;">$</span>
+          <span style="left:76%; font-size:1.4rem; animation-delay:5.2s;">$</span>
+          <span style="left:90%; font-size:1.1rem; animation-delay:2.6s;">$</span>
+        </div>
         <span class="badge">Leads Every Job</span>
         <h3>On-Site Buying Program</h3>
         <div class="price">Cash, on the spot</div>
@@ -963,29 +983,68 @@
   const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
 
-  // Core "value" gem
-  const coreGeo = new THREE.IcosahedronGeometry(1.9, 0);
-  const coreMat = new THREE.MeshStandardMaterial({
-    color: 0x153A52, emissive: 0x2E8FD4, emissiveIntensity: 0.55,
+  // ---- The house (the property we're clearing out / buying from) ----
+  const house = new THREE.Group();
+
+  const bodyMat = new THREE.MeshStandardMaterial({
+    color: 0x1B2C3D, emissive: 0x0B141E, emissiveIntensity: 0.5,
+    metalness: 0.35, roughness: 0.45, flatShading: true
+  });
+  const body = new THREE.Mesh(new THREE.BoxGeometry(2.3, 1.5, 2.0), bodyMat);
+  house.add(body);
+
+  const roofMat = new THREE.MeshStandardMaterial({
+    color: 0x2E8FD4, emissive: 0x2E8FD4, emissiveIntensity: 0.35,
     metalness: 0.4, roughness: 0.3, flatShading: true
   });
-  const core = new THREE.Mesh(coreGeo, coreMat);
-  core.position.set(2.2, 0.2, 0);
-  scene.add(core);
+  const roof = new THREE.Mesh(new THREE.ConeGeometry(1.85, 1.1, 4), roofMat);
+  roof.rotation.y = Math.PI / 4;
+  roof.position.y = 1.3;
+  house.add(roof);
 
-  // Wireframe shell around the gem
-  const wireGeo = new THREE.IcosahedronGeometry(2.5, 0);
-  const wireMat = new THREE.MeshBasicMaterial({ color: 0x72B8E8, wireframe: true, transparent: true, opacity: 0.3 });
-  const wire = new THREE.Mesh(wireGeo, wireMat);
-  wire.position.copy(core.position);
-  scene.add(wire);
+  // Glowing windows
+  const windowMat = new THREE.MeshBasicMaterial({ color: 0x72B8E8 });
+  const windowGeo = new THREE.PlaneGeometry(0.4, 0.4);
+  const winL = new THREE.Mesh(windowGeo, windowMat);
+  winL.position.set(-0.6, 0.15, 1.001);
+  house.add(winL);
+  const winR = new THREE.Mesh(windowGeo, windowMat);
+  winR.position.set(0.6, 0.15, 1.001);
+  house.add(winR);
 
-  // A second smaller drifting shape (lower-left)
-  const smallGeo = new THREE.OctahedronGeometry(0.7, 0);
-  const smallMat = new THREE.MeshBasicMaterial({ color: 0x72B8E8, wireframe: true, transparent: true, opacity: 0.35 });
-  const small = new THREE.Mesh(smallGeo, smallMat);
-  small.position.set(-3.4, -1.6, -1);
-  scene.add(small);
+  // Door
+  const doorMat = new THREE.MeshStandardMaterial({ color: 0x0B141E, metalness: 0.2, roughness: 0.6 });
+  const door = new THREE.Mesh(new THREE.PlaneGeometry(0.55, 0.95), doorMat);
+  door.position.set(0, -0.275, 1.001);
+  house.add(door);
+
+  // Chimney
+  const chimneyMat = new THREE.MeshStandardMaterial({ color: 0x16212E, metalness: 0.3, roughness: 0.5, flatShading: true });
+  const chimney = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.6, 0.3), chimneyMat);
+  chimney.position.set(0.7, 1.65, -0.3);
+  house.add(chimney);
+
+  house.position.set(2.1, -0.4, 0);
+  house.rotation.y = -0.5;
+  scene.add(house);
+
+  // Wireframe "value" shield wrapping the house
+  const shieldGeo = new THREE.IcosahedronGeometry(2.6, 1);
+  const shieldMat = new THREE.MeshBasicMaterial({ color: 0x72B8E8, wireframe: true, transparent: true, opacity: 0.16 });
+  const shield = new THREE.Mesh(shieldGeo, shieldMat);
+  shield.position.set(house.position.x, house.position.y + 0.5, house.position.z);
+  scene.add(shield);
+
+  // Spinning gold coin drifting lower-left
+  const coinGeo = new THREE.CylinderGeometry(0.55, 0.55, 0.12, 28);
+  const coinMat = new THREE.MeshStandardMaterial({
+    color: 0xE0C158, emissive: 0x6B5A1E, emissiveIntensity: 0.3,
+    metalness: 0.7, roughness: 0.25
+  });
+  const coin = new THREE.Mesh(coinGeo, coinMat);
+  coin.position.set(-3.3, -1.5, -1);
+  coin.rotation.x = Math.PI / 2.4;
+  scene.add(coin);
 
   // Lighting
   scene.add(new THREE.AmbientLight(0x335577, 1.4));
@@ -993,22 +1052,47 @@
   point.position.set(5, 4, 6);
   scene.add(point);
 
-  // Particle field — value sparks drifting around the gem
-  const particleCount = 140;
-  const positions = new Float32Array(particleCount * 3);
-  for (let i = 0; i < particleCount; i++) {
-    const r = 3.2 + Math.random() * 3.2;
-    const theta = Math.random() * Math.PI * 2;
-    const phi = Math.acos((Math.random() * 2) - 1);
-    positions[i * 3] = core.position.x + r * Math.sin(phi) * Math.cos(theta);
-    positions[i * 3 + 1] = core.position.y + r * Math.sin(phi) * Math.sin(theta) * 0.7;
-    positions[i * 3 + 2] = r * Math.cos(phi);
+  // "Cash flowing out" — floating dollar-coin sprites drifting up from the house
+  function makeCashTexture() {
+    const size = 128;
+    const cnv = document.createElement('canvas');
+    cnv.width = cnv.height = size;
+    const ctx = cnv.getContext('2d');
+    ctx.beginPath();
+    ctx.arc(size / 2, size / 2, size / 2 - 6, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(224, 193, 88, 0.92)';
+    ctx.fill();
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = 'rgba(255,255,255,0.85)';
+    ctx.stroke();
+    ctx.fillStyle = '#16212E';
+    ctx.font = 'bold 70px Georgia';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('$', size / 2, size / 2 + 6);
+    return new THREE.CanvasTexture(cnv);
   }
-  const particleGeo = new THREE.BufferGeometry();
-  particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-  const particleMat = new THREE.PointsMaterial({ color: 0x72B8E8, size: 0.045, transparent: true, opacity: 0.7, sizeAttenuation: true });
-  const particles = new THREE.Points(particleGeo, particleMat);
-  scene.add(particles);
+  const cashTexture = makeCashTexture();
+  const cashMat = new THREE.SpriteMaterial({ map: cashTexture, transparent: true, opacity: 0.92 });
+
+  function resetCashSprite(s, randomY) {
+    s.position.x = house.position.x + (Math.random() - 0.5) * 4.4;
+    s.position.z = house.position.z + (Math.random() - 0.5) * 3;
+    s.position.y = randomY ? house.position.y + Math.random() * 5 - 1.5 : house.position.y - 1.6;
+    s.userData.speed = 0.0006 + Math.random() * 0.0009;
+    s.userData.drift = (Math.random() - 0.5) * 0.0006;
+  }
+
+  const cashSprites = [];
+  const CASH_COUNT = 14;
+  for (let i = 0; i < CASH_COUNT; i++) {
+    const s = new THREE.Sprite(cashMat);
+    const scale = 0.28 + Math.random() * 0.24;
+    s.scale.set(scale, scale, 1);
+    resetCashSprite(s, true);
+    scene.add(s);
+    cashSprites.push(s);
+  }
 
   let mouseX = 0, mouseY = 0;
   window.addEventListener('mousemove', (e) => {
@@ -1027,14 +1111,24 @@
   resize();
   window.addEventListener('resize', resize);
 
+  let lastT = null;
   function frame(t) {
-    core.rotation.y = t * 0.00018;
-    core.rotation.x = t * 0.00009;
-    wire.rotation.y = -t * 0.00012;
-    wire.rotation.x = t * 0.00007;
-    small.rotation.x = t * 0.00025;
-    small.rotation.y = t * 0.0002;
-    particles.rotation.y = t * 0.00004;
+    if (lastT === null) lastT = t;
+    const dt = t - lastT;
+    lastT = t;
+
+    house.rotation.y = -0.5 + Math.sin(t * 0.00025) * 0.18;
+    house.position.y = -0.4 + Math.sin(t * 0.0006) * 0.08;
+    shield.rotation.y = t * 0.00009;
+    shield.rotation.x = t * 0.00005;
+    coin.rotation.z = t * 0.0009;
+    coin.position.y = -1.5 + Math.sin(t * 0.0009) * 0.25;
+
+    cashSprites.forEach((s) => {
+      s.position.y += s.userData.speed * dt;
+      s.position.x += s.userData.drift * dt;
+      if (s.position.y > house.position.y + 4) resetCashSprite(s, false);
+    });
 
     camera.position.x += (mouseX * 1.4 - camera.position.x) * 0.04;
     camera.position.y += (-mouseY * 1.0 - camera.position.y) * 0.04;
