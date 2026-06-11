@@ -537,6 +537,124 @@
     location.reload();
   }
 
+  // ---------- PRICE CHECK ----------
+
+  // Set this to your deployed pricing worker URL (see /worker/wrangler.toml).
+  var PRICE_API_URL = 'https://nethauls-pricing-api.YOUR-SUBDOMAIN.workers.dev';
+
+  function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.textContent = str == null ? '' : String(str);
+    return div.innerHTML;
+  }
+
+  function formatPriceUSD(value, currency) {
+    if (typeof value !== 'number') return '—';
+    try {
+      return new Intl.NumberFormat('en-US', { style: 'currency', currency: currency || 'USD' }).format(value);
+    } catch (e) {
+      return '$' + value.toFixed(2);
+    }
+  }
+
+  function renderPriceCheckLoading(query) {
+    $('pc-results').innerHTML =
+      '<div class="pc-status">' +
+        '<div class="pc-spinner"></div>' +
+        '<p>Searching live listings for &ldquo;' + escapeHtml(query) + '&rdquo;&hellip;</p>' +
+      '</div>';
+  }
+
+  function renderPriceCheckError(message) {
+    $('pc-results').innerHTML =
+      '<div class="pc-status is-error">' +
+        '<p>' + escapeHtml(message) + '</p>' +
+      '</div>';
+  }
+
+  function renderPriceCheckResults(data) {
+    var stats = data.stats;
+    var items = data.items || [];
+
+    if (items.length === 0) {
+      $('pc-results').innerHTML =
+        '<p class="pc-empty">No comparable listings found. Try a more general search term, or just the brand and item type.</p>';
+      return;
+    }
+
+    var currency = items[0].currency;
+    var summaryHtml = '';
+    if (stats) {
+      summaryHtml =
+        '<div class="be-grid">' +
+          '<div class="be-card pc-stat highlight">' +
+            '<p class="be-label">Suggested Range</p>' +
+            '<p class="be-value">' + formatPriceUSD(stats.suggestedLow, currency) + ' &ndash; ' + formatPriceUSD(stats.suggestedHigh, currency) + '</p>' +
+          '</div>' +
+          '<div class="be-card pc-stat">' +
+            '<p class="be-label">Median Asking</p>' +
+            '<p class="be-value">' + formatPriceUSD(stats.median, currency) + '</p>' +
+          '</div>' +
+          '<div class="be-card pc-stat">' +
+            '<p class="be-label">Low / High</p>' +
+            '<p class="be-value">' + formatPriceUSD(stats.min, currency) + ' &ndash; ' + formatPriceUSD(stats.max, currency) + '</p>' +
+          '</div>' +
+        '</div>';
+    }
+
+    var cardsHtml = items.map(function (item) {
+      return (
+        '<div class="pc-card">' +
+          '<div class="pc-card-thumb">' +
+            (item.image ? '<img src="' + escapeHtml(item.image) + '" alt="' + escapeHtml(item.title) + '" loading="lazy">' : '') +
+            (item.condition ? '<span class="pc-card-condition">' + escapeHtml(item.condition) + '</span>' : '') +
+          '</div>' +
+          '<div class="pc-card-body">' +
+            '<p class="pc-card-title">' + escapeHtml(item.title) + '</p>' +
+            '<p class="pc-card-price">' + formatPriceUSD(item.price, item.currency) + '</p>' +
+            '<a class="pc-card-link" href="' + escapeHtml(item.url) + '" target="_blank" rel="noopener">View on eBay &rarr;</a>' +
+          '</div>' +
+        '</div>'
+      );
+    }).join('');
+
+    $('pc-results').innerHTML =
+      summaryHtml +
+      '<p class="pc-meta">' + items.length + ' comparable listing' + (items.length === 1 ? '' : 's') + ' for &ldquo;' + escapeHtml(data.query) + '&rdquo;</p>' +
+      '<div class="pc-grid">' + cardsHtml + '</div>' +
+      '<p class="pc-disclaimer">Prices reflect current eBay asking prices, not confirmed sale prices. Use as a starting point for your offer and resale price.</p>';
+  }
+
+  function setupPriceCheck() {
+    var form = $('pc-form');
+    if (!form) return;
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var query = $('pc-query').value.trim();
+      if (!query) return;
+
+      var submitBtn = $('pc-submit');
+      submitBtn.disabled = true;
+      renderPriceCheckLoading(query);
+
+      fetch(PRICE_API_URL + '?q=' + encodeURIComponent(query))
+        .then(function (res) {
+          return res.json().then(function (data) {
+            if (!res.ok) throw new Error(data.error || 'Something went wrong.');
+            return data;
+          });
+        })
+        .then(renderPriceCheckResults)
+        .catch(function (err) {
+          renderPriceCheckError(err.message || 'Network error — please try again.');
+        })
+        .finally(function () {
+          submitBtn.disabled = false;
+        });
+    });
+  }
+
   // ---------- INIT ----------
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -595,6 +713,8 @@
     $('btn-preset-standard').addEventListener('click', function () { setStartupPreset('standard'); });
     $('btn-use-job-profit').addEventListener('click', useLastJobForRevenue);
     $('btn-reset-all').addEventListener('click', resetAll);
+
+    setupPriceCheck();
 
     // ---------- Scroll progress + reveal (visual polish) ----------
     var progressBar = $('scroll-progress');

@@ -1017,6 +1017,116 @@ h2 {
   line-height: 1.6;
 }
 
+/* ============ PRICE CHECK ============ */
+.pc-search-card { max-width: 100%; }
+
+.pc-form {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.pc-input-field {
+  flex: 1 1 320px;
+}
+
+.pc-form .btn { flex-shrink: 0; }
+
+.pc-results { margin-top: 24px; }
+
+.pc-status {
+  text-align: center;
+  padding: 32px 16px;
+  color: var(--silver-dark);
+}
+
+.pc-status.is-error { color: var(--red); }
+
+.pc-spinner {
+  width: 28px; height: 28px; border-radius: 50%; margin: 0 auto 14px;
+  border: 3px solid var(--blue-pale); border-top-color: var(--blue-mid);
+  animation: pc-spin 0.8s linear infinite;
+}
+
+@keyframes pc-spin { to { transform: rotate(360deg); } }
+
+.pc-empty {
+  text-align: center;
+  padding: 24px 16px;
+  color: var(--silver-dark);
+  font-size: 14px;
+}
+
+.pc-stat.highlight {
+  background: var(--blue-mid);
+  border-color: var(--blue-mid);
+}
+
+.pc-stat.highlight .be-label { color: var(--blue-pale); }
+.pc-stat.highlight .be-value { color: var(--white); }
+
+.pc-meta {
+  font-size: 13px;
+  color: var(--silver-dark);
+  margin: 20px 0 14px;
+}
+
+.pc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.pc-card {
+  background: var(--off-white);
+  border: 1px solid var(--silver-light);
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.pc-card-thumb {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: var(--dark-mid);
+  overflow: hidden;
+}
+
+.pc-card-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.pc-card-condition {
+  position: absolute; top: 10px; right: 10px;
+  background: rgba(255,255,255,0.92); color: var(--blue-deep);
+  font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 999px;
+}
+
+.pc-card-body { padding: 12px 14px 16px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+
+.pc-card-title {
+  font-size: 13px; line-height: 1.4; color: var(--dark);
+}
+
+.pc-card-price {
+  font-family: var(--font-serif); font-size: 18px; color: var(--blue-deep);
+}
+
+.pc-card-link {
+  margin-top: auto; padding-top: 6px; font-size: 12px; font-weight: 600; color: var(--blue-mid);
+}
+
+.pc-card-link:hover { color: var(--blue-deep); }
+
+.pc-disclaimer {
+  margin-top: 20px;
+  font-size: 12px;
+  color: var(--silver-dark);
+  line-height: 1.6;
+  text-align: center;
+}
+
 /* ============ RESPONSIVE ============ */
 @media (max-width: 1024px) {
   .planner-layout,
@@ -1063,6 +1173,9 @@ h2 {
   }
 
   .be-grid { grid-template-columns: 1fr; }
+
+  .pc-form { flex-direction: column; align-items: stretch; }
+  .pc-input-field { flex: none; }
 
   .checklist-grid { grid-template-columns: 1fr; }
 

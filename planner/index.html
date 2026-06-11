@@ -38,6 +38,7 @@
         <a href="#startup">Startup Costs</a>
         <a href="#overhead">Monthly Overhead</a>
         <a href="#load-calc">Load Calculator</a>
+        <a href="#price-check">Price Check</a>
         <a href="#revenue">Revenue &amp; Break-Even</a>
         <a href="#outlook">5-Year Outlook</a>
         <a href="#checklist">Launch Checklist</a>
@@ -263,8 +264,35 @@
       </div>
     </section>
 
+    <!-- ============ PRICE CHECK ============ -->
+    <section class="planner-section planner-section-alt" id="price-check">
+      <div class="container">
+        <div class="reveal">
+          <p class="eyebrow eyebrow-dark">Internal Tool</p>
+          <h2>Price Check</h2>
+          <p class="section-body">Look up live eBay asking prices for an item while you're on a walkthrough, so you can make a fair on-the-spot offer and know what to plug into "Estimated Resale Value" above. This tool is internal only &mdash; customers never see it.</p>
+        </div>
+
+        <div class="planner-layout reveal" style="transition-delay: 0.1s;">
+          <div class="form-section pc-search-card">
+            <h3>Search an Item</h3>
+            <form id="pc-form" class="pc-form">
+              <div class="form-field pc-input-field">
+                <label for="pc-query">Item Description</label>
+                <input type="text" id="pc-query" placeholder="e.g. Keurig K-Elite, Ethan Allen dresser, DeWalt drill&hellip;" autocomplete="off" required>
+              </div>
+              <button type="submit" class="btn btn-primary" id="pc-submit">Check Price</button>
+            </form>
+            <p class="field-hint">Be specific &mdash; brand and model name gives the most accurate comps. Prices reflect current eBay asking prices, not confirmed sale prices.</p>
+
+            <div id="pc-results" class="pc-results"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ============ REVENUE & BREAK-EVEN ============ -->
-    <section class="planner-section planner-section-alt" id="revenue">
+    <section class="planner-section" id="revenue">
       <div class="container">
         <div class="reveal">
           <p class="eyebrow eyebrow-dark">Step 4</p>
@@ -337,7 +365,7 @@
     </section>
 
     <!-- ============ 5-YEAR OUTLOOK ============ -->
-    <section class="planner-section" id="outlook">
+    <section class="planner-section planner-section-alt" id="outlook">
       <div class="container">
         <div class="reveal">
           <p class="eyebrow eyebrow-dark">The Long View</p>
@@ -363,7 +391,7 @@
     </section>
 
     <!-- ============ LAUNCH CHECKLIST ============ -->
-    <section class="planner-section planner-section-alt" id="checklist">
+    <section class="planner-section" id="checklist">
       <div class="container">
         <div class="reveal">
           <p class="eyebrow eyebrow-dark">Step 5</p>
