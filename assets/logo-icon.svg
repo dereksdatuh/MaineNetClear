@@ -1,35 +1,42 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="NetHauls logo">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="NetHauls logo">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#1A6FA8"/>
+      <stop offset="0%" stop-color="#16212E"/>
       <stop offset="100%" stop-color="#080C10"/>
     </linearGradient>
-    <linearGradient id="roofL" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="roofL" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#9AD4F7"/>
       <stop offset="100%" stop-color="#72B8E8"/>
     </linearGradient>
-    <linearGradient id="roofR" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="roofR" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#2E8FD4"/>
       <stop offset="100%" stop-color="#1A6FA8"/>
     </linearGradient>
+    <linearGradient id="letters" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#DCF0FC"/>
+    </linearGradient>
   </defs>
 
-  <rect width="64" height="64" rx="15" fill="url(#bg)"/>
+  <rect width="240" height="240" rx="36" fill="url(#bg)"/>
 
-  <!-- house body -->
-  <rect x="15" y="31" width="34" height="21" rx="2" fill="#F4F7FA"/>
+  <!-- low-poly roof, two facets, sitting over the monogram like a house -->
+  <path d="M122 22 L26 78 L122 78 Z" fill="url(#roofL)"/>
+  <path d="M122 22 L122 78 L218 78 Z" fill="url(#roofR)"/>
 
-  <!-- low-poly roof, two facets -->
-  <path d="M13 32 L32 15 L32 32 Z" fill="url(#roofL)"/>
-  <path d="M32 15 L51 32 L32 32 Z" fill="url(#roofR)"/>
+  <!-- NH monogram, drawn as continuous strokes -->
+  <g fill="none" stroke="url(#letters)" stroke-width="16" stroke-linecap="square" stroke-linejoin="round">
+    <!-- N -->
+    <path d="M42 168 L42 82 L110 168 L110 82"/>
+    <!-- H -->
+    <path d="M134 82 L134 168 M202 82 L202 168 M134 125 L202 125"/>
+  </g>
 
-  <!-- door -->
-  <rect x="28" y="40" width="8" height="12" rx="1" fill="#16212E"/>
-
-  <!-- window -->
-  <rect x="19" y="36" width="6" height="6" rx="1" fill="#72B8E8"/>
-
-  <!-- cash coin badge -->
-  <circle cx="49" cy="49" r="12" fill="#72B8E8" stroke="#080C10" stroke-width="2.5"/>
-  <text x="49" y="54" font-family="Georgia, 'Times New Roman', serif" font-weight="700" font-size="15" fill="#0B141E" text-anchor="middle">$</text>
+  <!-- hauling truck, parked beneath the monogram -->
+  <g>
+    <rect x="86" y="176" width="70" height="18" rx="3" fill="#8C95A8"/>
+    <rect x="66" y="181" width="26" height="13" rx="2" fill="#72B8E8"/>
+    <circle cx="84" cy="200" r="8" fill="#080C10" stroke="#72B8E8" stroke-width="2.5"/>
+    <circle cx="142" cy="200" r="8" fill="#080C10" stroke="#72B8E8" stroke-width="2.5"/>
+  </g>
 </svg>
