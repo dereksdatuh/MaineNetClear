@@ -1054,6 +1054,47 @@ h2 {
   background: var(--dark);
 }
 
+/* ============ FUEL SURCHARGE NOTE ============ */
+.fuel-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  margin-top: 40px;
+  padding: 28px;
+  background: var(--off-white);
+  border: 1px solid var(--silver-light);
+  border-radius: 12px;
+}
+
+.fuel-note-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--blue-pale);
+  border: 1px solid var(--blue-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.fuel-note-icon svg {
+  width: 18px;
+  height: 18px;
+  color: var(--blue-mid);
+}
+
+.fuel-note h3 {
+  font-size: 17px;
+  margin-bottom: 8px;
+}
+
+.fuel-note p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--silver-dark);
+}
+
 /* ============ FAQ ============ */
 .faq {
   background: var(--off-white);
@@ -1484,6 +1525,10 @@ h2 {
     grid-template-columns: 1fr;
   }
 
+  .fuel-note {
+    flex-direction: column;
+  }
+
   .agent-stats {
     gap: 36px;
   }
@@ -1551,6 +1596,13 @@ h2 {
 }
 
 @media (max-width: 480px) {
+  .brand-sub {
+    font-size: 9px;
+    max-width: 150px;
+    white-space: normal;
+    line-height: 1.3;
+  }
+
   .hero-text h1 {
     font-size: 32px;
   }
