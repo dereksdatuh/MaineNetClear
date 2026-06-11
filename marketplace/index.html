@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NetHauls Marketplace | Items for Sale in York County, ME</title>
+<meta name="description" content="Browse items NetHauls has picked up through our on-site buying program. Furniture, tools, electronics, and more for sale across York County, Maine.">
+<style>
+  :root {
+    --black: #080C10;
+    --dark: #0F1923;
+    --dark-mid: #16212E;
+    --white: #FFFFFF;
+    --off-white: #F4F7FA;
+    --blue-deep: #1A6FA8;
+    --blue: #2E8FD4;
+    --blue-light: #72B8E8;
+    --blue-pale: #DCF0FC;
+    --silver: #8C95A8;
+    --silver-light: #C8D0DC;
+    --silver-dark: #5A6478;
+
+    --serif: Georgia, 'Times New Roman', Times, serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --container: 1180px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  body {
+    font-family: var(--sans);
+    color: var(--dark);
+    background: var(--off-white);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; }
+
+  h1, h2, h3, h4 {
+    font-family: var(--serif);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    color: var(--black);
+  }
+
+  .container { max-width: var(--container); margin: 0 auto; padding: 0 28px; }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+  /* ---------- Nav ---------- */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    padding: 18px 0; background: rgba(8,12,16,0.92); backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+  .nav-logo { display: flex; align-items: baseline; gap: 8px; font-family: var(--serif); font-size: 1.35rem; color: var(--white); letter-spacing: 0.01em; }
+  .nav-logo span { color: var(--blue-light); }
+  .nav-logo small { font-size: 0.75rem; font-family: var(--sans); color: var(--silver); letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; }
+  .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+  .nav-links a { color: var(--silver-light); font-size: 0.92rem; transition: color 0.25s ease; }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta {
+    display: inline-flex; align-items: center; gap: 8px; background: var(--blue); color: var(--white) !important;
+    padding: 10px 20px; border-radius: 999px; font-size: 0.88rem; font-weight: 600;
+    transition: background 0.25s ease, transform 0.25s ease;
+  }
+  .nav-cta:hover { background: var(--blue-light); transform: translateY(-1px); }
+
+  /* ---------- Header / hero ---------- */
+  .mp-hero {
+    background: var(--black); color: var(--white); padding: 140px 0 70px; position: relative; overflow: hidden;
+  }
+  .mp-hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 800px 500px at 15% 10%, rgba(46,143,212,0.22), transparent 60%);
+    pointer-events: none;
+  }
+  .mp-hero-inner { position: relative; z-index: 1; max-width: 720px; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px; font-size: 0.78rem;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--blue-light); font-weight: 700; margin-bottom: 18px;
+  }
+  .eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--blue-light); }
+  .mp-hero h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); line-height: 1.12; color: var(--white); margin-bottom: 16px; }
+  .mp-hero p { color: var(--silver-light); font-size: 1.05rem; max-width: 560px; }
+
+  /* ---------- Filter bar ---------- */
+  .filter-bar {
+    position: sticky; top: 64px; z-index: 100;
+    background: var(--off-white); border-bottom: 1px solid #E4EAF1;
+    padding: 18px 0;
+  }
+  .filter-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .search-input {
+    flex: 1 1 220px; border: 1px solid #D7DEE7; border-radius: 999px; padding: 11px 20px;
+    font-size: 0.93rem; font-family: var(--sans); color: var(--dark); background: var(--white);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+  .search-input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-pale); }
+  .sort-select {
+    border: 1px solid #D7DEE7; border-radius: 999px; padding: 11px 18px; font-size: 0.9rem;
+    font-family: var(--sans); color: var(--dark); background: var(--white); cursor: pointer;
+  }
+  .category-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .category-pill {
+    border: 1px solid #D7DEE7; background: var(--white); border-radius: 999px; padding: 8px 18px;
+    font-size: 0.85rem; font-weight: 600; color: var(--silver-dark); cursor: pointer;
+    transition: all 0.25s var(--ease);
+  }
+  .category-pill:hover { border-color: var(--blue); color: var(--blue-deep); }
+  .category-pill.is-active { background: var(--blue); border-color: var(--blue); color: var(--white); }
+
+  /* ---------- Product grid ---------- */
+  .mp-section { padding: 50px 0 110px; }
+  .results-meta { color: var(--silver-dark); font-size: 0.92rem; margin-bottom: 24px; }
+  .product-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px;
+  }
+  .product-card {
+    background: var(--white); border: 1px solid #E4EAF1; border-radius: 18px; overflow: hidden;
+    cursor: pointer; transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease), border-color 0.3s ease;
+    display: flex; flex-direction: column;
+  }
+  .product-card:hover { transform: translateY(-5px); box-shadow: 0 18px 46px -24px rgba(8,12,16,0.25); border-color: var(--blue-pale); }
+  .product-thumb { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: var(--dark-mid); }
+  .product-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s var(--ease); }
+  .product-card:hover .product-thumb img { transform: scale(1.04); }
+  .sold-badge {
+    position: absolute; top: 12px; left: 12px; background: var(--black); color: var(--white);
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 6px 12px; border-radius: 999px;
+  }
+  .condition-badge {
+    position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.92); color: var(--blue-deep);
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 6px 12px; border-radius: 999px;
+  }
+  .product-body { padding: 18px 20px 22px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+  .product-body h3 { font-size: 1.1rem; line-height: 1.3; }
+  .product-price { font-family: var(--serif); font-size: 1.35rem; color: var(--blue-deep); }
+  .product-location { color: var(--silver-dark); font-size: 0.85rem; margin-top: auto; padding-top: 8px; display: flex; align-items: center; gap: 6px; }
+  .product-location svg { color: var(--blue); flex-shrink: 0; }
+
+  .empty-state { text-align: center; padding: 80px 20px; color: var(--silver-dark); }
+  .empty-state h3 { color: var(--black); margin-bottom: 10px; }
+
+  /* ---------- Modal ---------- */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(8,12,16,0.7); backdrop-filter: blur(4px);
+    display: flex; align-items: center; justify-content: center; padding: 24px; z-index: 2000;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+  }
+  .modal-overlay.is-open { opacity: 1; pointer-events: auto; }
+  .modal {
+    background: var(--white); border-radius: 22px; max-width: 920px; width: 100%; max-height: 88vh;
+    overflow-y: auto; display: grid; grid-template-columns: 1.1fr 1fr;
+    transform: translateY(24px) scale(0.98); transition: transform 0.35s var(--ease);
+  }
+  .modal-overlay.is-open .modal { transform: translateY(0) scale(1); }
+  .modal-media { background: var(--dark-mid); position: relative; }
+  .modal-media img { width: 100%; height: 100%; object-fit: cover; min-height: 280px; }
+  .modal-thumbs { display: flex; gap: 8px; padding: 12px; background: var(--black); flex-wrap: wrap; }
+  .modal-thumbs img {
+    width: 56px; height: 56px; object-fit: cover; border-radius: 8px; cursor: pointer;
+    border: 2px solid transparent; transition: border-color 0.2s ease;
+  }
+  .modal-thumbs img.is-active { border-color: var(--blue-light); }
+  .modal-info { padding: 36px; display: flex; flex-direction: column; }
+  .modal-close {
+    position: absolute; top: 16px; right: 16px; width: 38px; height: 38px; border-radius: 50%;
+    background: rgba(8,12,16,0.6); color: var(--white); border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; font-size: 1.2rem; z-index: 1;
+    transition: background 0.2s ease;
+  }
+  .modal-close:hover { background: var(--blue); }
+  .modal-info .condition-tag {
+    display: inline-block; align-self: flex-start; background: var(--blue-pale); color: var(--blue-deep);
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 6px 12px; border-radius: 999px; margin-bottom: 14px;
+  }
+  .modal-info h2 { font-size: 1.7rem; margin-bottom: 8px; }
+  .modal-info .modal-price { font-family: var(--serif); font-size: 1.6rem; color: var(--blue-deep); margin-bottom: 16px; }
+  .modal-info .modal-desc { color: var(--silver-dark); font-size: 0.98rem; margin-bottom: 22px; }
+  .modal-info .modal-location { display: flex; align-items: center; gap: 8px; color: var(--silver-dark); font-size: 0.9rem; margin-bottom: 26px; }
+  .modal-info .modal-location svg { color: var(--blue); }
+  .modal-actions { display: flex; flex-direction: column; gap: 12px; margin-top: auto; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 15px 28px; border-radius: 999px; font-size: 0.95rem; font-weight: 600;
+    cursor: pointer; border: 1px solid transparent;
+    transition: transform 0.3s var(--ease), background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+  }
+  .btn-primary { background: var(--blue); color: var(--white); }
+  .btn-primary:hover { background: var(--blue-light); transform: translateY(-2px); }
+  .btn-outline { background: transparent; color: var(--blue-deep); border-color: var(--blue-pale); }
+  .btn-outline:hover { border-color: var(--blue); transform: translateY(-2px); }
+  .modal-sold-note {
+    background: var(--off-white); border: 1px solid #E4EAF1; border-radius: 12px;
+    padding: 16px 18px; color: var(--silver-dark); font-size: 0.9rem; text-align: center;
+  }
+
+  /* ---------- Footer ---------- */
+  .footer { background: var(--black); color: var(--silver); padding: 50px 0 28px; }
+  .footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  .footer-brand { font-family: var(--serif); font-size: 1.3rem; color: var(--white); }
+  .footer-brand span { color: var(--blue-light); }
+  .footer-links { display: flex; gap: 24px; list-style: none; flex-wrap: wrap; }
+  .footer-links a { font-size: 0.9rem; color: var(--silver); transition: color 0.25s ease; }
+  .footer-links a:hover { color: var(--blue-light); }
+  .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); margin-top: 30px; padding-top: 22px; font-size: 0.85rem; color: var(--silver-dark); text-align: center; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 720px) {
+    .nav-links { display: none; }
+    .filter-bar { top: 60px; }
+    .modal { grid-template-columns: 1fr; }
+    .modal-media img { min-height: 220px; }
+    .modal-info { padding: 26px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav class="nav">
+  <div class="container nav-inner">
+    <a href="../index.html" class="nav-logo">NetHauls<span>.</span> <small>Marketplace</small></a>
+    <ul class="nav-links">
+      <li><a href="../nethauls/index.html">Removal &amp; Buying Program</a></li>
+      <li><a href="../nethauls/index.html#contact" class="nav-cta">Get a Quote</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="mp-hero">
+  <div class="container mp-hero-inner">
+    <p class="eyebrow">NetHauls Marketplace</p>
+    <h1>Items we've bought, now ready for a new home.</h1>
+    <p>Every piece here came through our on-site buying program: vetted, priced fairly, and ready to go. First come, first served. Reach out and we'll set up a pickup time in York County.</p>
+  </div>
+</header>
+
+<!-- ============ FILTER BAR ============ -->
+<div class="filter-bar">
+  <div class="container">
+    <div class="filter-row">
+      <input type="text" class="search-input" id="searchInput" placeholder="Search items&hellip;">
+      <select class="sort-select" id="sortSelect">
+        <option value="newest">Newest first</option>
+        <option value="price-asc">Price: low to high</option>
+        <option value="price-desc">Price: high to low</option>
+      </select>
+    </div>
+    <div class="category-row" id="categoryRow"></div>
+  </div>
+</div>
+
+<!-- ============ PRODUCT GRID ============ -->
+<section class="mp-section">
+  <div class="container">
+    <p class="results-meta" id="resultsMeta"></p>
+    <div class="product-grid" id="productGrid"></div>
+    <div class="empty-state" id="emptyState" style="display:none;">
+      <h3>No items match your search</h3>
+      <p>Try a different category or clear your search.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MODAL ============ -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modal">
+    <button class="modal-close" id="modalClose" aria-label="Close">&times;</button>
+    <div class="modal-media">
+      <img id="modalImage" src="" alt="">
+      <div class="modal-thumbs" id="modalThumbs"></div>
+    </div>
+    <div class="modal-info">
+      <span class="condition-tag" id="modalCondition"></span>
+      <h2 id="modalTitle"></h2>
+      <div class="modal-price" id="modalPrice"></div>
+      <p class="modal-desc" id="modalDesc"></p>
+      <div class="modal-location">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span id="modalLocation"></span>
+      </div>
+      <div class="modal-actions" id="modalActions"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">NetHauls<span>.</span> Marketplace</div>
+      <ul class="footer-links">
+        <li><a href="../nethauls/index.html">Main Site</a></li>
+        <li><a href="tel:+12074686998">(207) 468-6998</a></li>
+        <li><a href="mailto:info@nethauls.com">info@nethauls.com</a></li>
+        <li><a href="https://instagram.com/nethauls" target="_blank" rel="noopener">@nethauls</a></li>
+      </ul>
+    </div>
+    <div class="footer-bottom">
+      &copy; <span id="year"></span> NetHauls LLC. All items sold as-is, cash or Venmo on pickup.
+    </div>
+  </div>
+</footer>
+
+<script src="products.js"></script>
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  let activeCategory = 'All';
+  let searchTerm = '';
+  let sortMode = 'newest';
+  let activeModalImages = [];
+  let activeModalIndex = 0;
+
+  // ---- Build category pills ----
+  const categoryRow = document.getElementById('categoryRow');
+  const allCategories = ['All', ...CATEGORIES];
+  allCategories.forEach(cat => {
+    const pill = document.createElement('button');
+    pill.className = 'category-pill' + (cat === 'All' ? ' is-active' : '');
+    pill.textContent = cat;
+    pill.dataset.category = cat;
+    pill.addEventListener('click', () => {
+      activeCategory = cat;
+      document.querySelectorAll('.category-pill').forEach(p => p.classList.toggle('is-active', p === pill));
+      render();
+    });
+    categoryRow.appendChild(pill);
+  });
+
+  // ---- Search & sort ----
+  document.getElementById('searchInput').addEventListener('input', (e) => {
+    searchTerm = e.target.value.trim().toLowerCase();
+    render();
+  });
+  document.getElementById('sortSelect').addEventListener('change', (e) => {
+    sortMode = e.target.value;
+    render();
+  });
+
+  // ---- Render grid ----
+  const grid = document.getElementById('productGrid');
+  const emptyState = document.getElementById('emptyState');
+  const resultsMeta = document.getElementById('resultsMeta');
+
+  function getFiltered() {
+    let items = PRODUCTS.slice().reverse(); // newest (last added) first by default
+    if (activeCategory !== 'All') {
+      items = items.filter(p => p.category === activeCategory);
+    }
+    if (searchTerm) {
+      items = items.filter(p =>
+        p.title.toLowerCase().includes(searchTerm) ||
+        p.description.toLowerCase().includes(searchTerm) ||
+        p.category.toLowerCase().includes(searchTerm)
+      );
+    }
+    if (sortMode === 'price-asc') items.sort((a, b) => a.price - b.price);
+    if (sortMode === 'price-desc') items.sort((a, b) => b.price - a.price);
+    return items;
+  }
+
+  function render() {
+    const items = getFiltered();
+    grid.innerHTML = '';
+    emptyState.style.display = items.length ? 'none' : 'block';
+    resultsMeta.textContent = items.length === 1 ? '1 item' : items.length + ' items';
+
+    items.forEach((p, i) => {
+      const card = document.createElement('div');
+      card.className = 'product-card reveal';
+      card.innerHTML = `
+        <div class="product-thumb">
+          <img src="${p.images[0]}" alt="${p.title}" loading="lazy">
+          ${p.sold ? '<span class="sold-badge">Sold</span>' : ''}
+          <span class="condition-badge">${p.condition}</span>
+        </div>
+        <div class="product-body">
+          <h3>${p.title}</h3>
+          <div class="product-price">$${p.price}</div>
+          <div class="product-location">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            ${p.location}
+          </div>
+        </div>
+      `;
+      card.addEventListener('click', () => openModal(p));
+      grid.appendChild(card);
+
+      // observe for reveal animation
+      revealObserver.observe(card);
+    });
+  }
+
+  // ---- Reveal animation ----
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  // ---- Modal ----
+  const modalOverlay = document.getElementById('modalOverlay');
+  const modalImage = document.getElementById('modalImage');
+  const modalThumbs = document.getElementById('modalThumbs');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalPrice = document.getElementById('modalPrice');
+  const modalDesc = document.getElementById('modalDesc');
+  const modalCondition = document.getElementById('modalCondition');
+  const modalLocation = document.getElementById('modalLocation');
+  const modalActions = document.getElementById('modalActions');
+
+  function openModal(p) {
+    activeModalImages = p.images;
+    activeModalIndex = 0;
+    modalImage.src = p.images[0];
+    modalImage.alt = p.title;
+    modalTitle.textContent = p.title;
+    modalPrice.textContent = '$' + p.price;
+    modalDesc.textContent = p.description;
+    modalCondition.textContent = p.condition + (p.sold ? ' · Sold' : '');
+    modalLocation.textContent = p.location;
+
+    modalThumbs.innerHTML = '';
+    if (p.images.length > 1) {
+      p.images.forEach((src, i) => {
+        const t = document.createElement('img');
+        t.src = src;
+        t.className = i === 0 ? 'is-active' : '';
+        t.addEventListener('click', () => {
+          activeModalIndex = i;
+          modalImage.src = src;
+          modalThumbs.querySelectorAll('img').forEach((el, j) => el.classList.toggle('is-active', j === i));
+        });
+        modalThumbs.appendChild(t);
+      });
+    }
+
+    modalActions.innerHTML = '';
+    if (p.sold) {
+      const note = document.createElement('div');
+      note.className = 'modal-sold-note';
+      note.textContent = "This item has sold, but similar items come through often. Check back or get in touch.";
+      modalActions.appendChild(note);
+    } else {
+      const subject = encodeURIComponent('Marketplace inquiry: ' + p.title);
+      const body = encodeURIComponent('Hi, I\'m interested in the ' + p.title + ' listed for $' + p.price + ' on the NetHauls Marketplace. Is it still available?');
+      const callBtn = document.createElement('a');
+      callBtn.href = 'tel:+12074686998';
+      callBtn.className = 'btn btn-primary';
+      callBtn.textContent = 'Call (207) 468-6998';
+      const emailBtn = document.createElement('a');
+      emailBtn.href = `mailto:info@nethauls.com?subject=${subject}&body=${body}`;
+      emailBtn.className = 'btn btn-outline';
+      emailBtn.textContent = 'Email About This Item';
+      modalActions.appendChild(callBtn);
+      modalActions.appendChild(emailBtn);
+    }
+
+    modalOverlay.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modalOverlay.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  modalOverlay.addEventListener('click', (e) => {
+    if (e.target === modalOverlay) closeModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  render();
+</script>
+
+</body>
+</html>

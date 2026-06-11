@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="450" viewBox="0 0 600 450">
+  <rect width="600" height="450" fill="#16212E"/>
+  <rect x="0" y="0" width="600" height="450" fill="url(#g)"/>
+  <defs>
+    <radialGradient id="g" cx="30%" cy="20%" r="80%">
+      <stop offset="0%" stop-color="#2E8FD4" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#080C10" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <g fill="none" stroke="#72B8E8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.55">
+    <rect x="255" y="180" width="90" height="70" rx="6"/>
+    <circle cx="278" cy="203" r="8"/>
+    <path d="M255 235l25-25 18 18 20-26 27 33"/>
+  </g>
+  <text x="300" y="290" font-family="Georgia, serif" font-size="20" fill="#8C95A8" text-anchor="middle">Photo coming soon</text>
+</svg>
