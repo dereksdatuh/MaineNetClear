@@ -314,12 +314,14 @@
     var scrapCredit  = num('job-scrap');
     var resaleValue  = num('job-resale');
     var buyPct       = num('job-buypct');
+    var sellFeePct   = num('job-sellfeepct');
 
     var dumpFee = (weight / 2000) * dumpRate + mattresses * mattressFee;
     var fuelCost = (distance / mpg) * fuelPrice;
     var buyDiscount = resaleValue * (buyPct / 100);
     var cashCollected = serviceFee - buyDiscount;
-    var resaleMargin = resaleValue - buyDiscount;
+    var sellFee = resaleValue * (sellFeePct / 100);
+    var resaleMargin = resaleValue - buyDiscount - sellFee;
     var immediateNet = cashCollected + scrapCredit - dumpFee - fuelCost;
     var totalProfit = immediateNet + resaleMargin;
     var marginPct = serviceFee > 0 ? (totalProfit / serviceFee) * 100 : 0;
@@ -328,6 +330,7 @@
     $('out-fuelcost').textContent = fmt(fuelCost);
     $('out-cashcollected').textContent = fmt(cashCollected);
     $('out-buydiscount').textContent = fmt(buyDiscount);
+    $('out-sellfee').textContent = fmt(sellFee);
     $('out-resalemargin').textContent = fmt(resaleMargin);
     $('out-immediatenet').textContent = fmt(immediateNet);
     $('out-totalprofit').textContent = fmt(totalProfit);
@@ -543,7 +546,7 @@
 
     // Bind persisted simple inputs in load calculator + revenue projector
     ['job-fee', 'job-distance', 'job-mpg', 'job-fuelprice', 'job-weight', 'job-dumprate',
-     'job-mattresses', 'job-mattressfee', 'job-scrap', 'job-resale', 'job-buypct',
+     'job-mattresses', 'job-mattressfee', 'job-scrap', 'job-resale', 'job-buypct', 'job-sellfeepct',
      'rev-jobsperweek', 'rev-profitperjob', 'rev-revenueperjob', 'rev-overhead'].forEach(function (id) {
       var el = $(id);
       if (!el) return;
@@ -561,7 +564,7 @@
     $('job-type').addEventListener('change', function () { saveVal('job-type', $('job-type').value); });
 
     ['job-fee', 'job-distance', 'job-mpg', 'job-fuelprice', 'job-weight', 'job-dumprate',
-     'job-mattresses', 'job-mattressfee', 'job-scrap', 'job-resale', 'job-buypct'].forEach(function (id) {
+     'job-mattresses', 'job-mattressfee', 'job-scrap', 'job-resale', 'job-buypct', 'job-sellfeepct'].forEach(function (id) {
       $(id).addEventListener('input', updateLoadCalc);
     });
     updateLoadCalc();
