@@ -136,22 +136,33 @@ h2 {
 }
 
 .btn-primary {
-  background: var(--blue-mid);
+  background: linear-gradient(135deg, var(--blue-light) 0%, var(--blue-mid) 55%, var(--blue-deep) 100%);
   color: var(--white);
+  box-shadow: 0 6px 24px rgba(46, 143, 212, 0.28);
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
 }
 
 .btn-primary:hover {
-  opacity: 0.9;
+  box-shadow: 0 10px 32px rgba(46, 143, 212, 0.42);
+  transform: translateY(-2px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 16px rgba(46, 143, 212, 0.3);
 }
 
 .btn-ghost {
   background: transparent;
   color: var(--white);
   border: 1px solid rgba(255, 255, 255, 0.25);
+  transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
 }
 
 .btn-ghost:hover {
   border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.04);
+  transform: translateY(-2px);
 }
 
 .btn-submit {
@@ -208,6 +219,31 @@ h2 {
   animation: fadeInUp 0.8s ease forwards;
 }
 
+/* ============ GRADIENT TEXT ============ */
+.text-gradient {
+  background: linear-gradient(135deg, var(--blue-light) 0%, var(--blue-mid) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.text-gradient-dark {
+  background: linear-gradient(135deg, var(--blue-mid) 0%, var(--blue-deep) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ============ GRAIN TEXTURE OVERLAY ============ */
+.grain-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.4;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}
+
 /* ============ NAVIGATION ============ */
 .site-header {
   position: fixed;
@@ -246,6 +282,11 @@ h2 {
   width: 34px;
   height: 34px;
   flex-shrink: 0;
+  transition: transform 0.4s ease;
+}
+
+.nav-brand:hover .logo-mark {
+  transform: rotate(8deg) scale(1.06);
 }
 
 .nav-brand-text {
@@ -381,6 +422,23 @@ h2 {
   height: 500px;
   background: radial-gradient(circle, rgba(46, 143, 212, 0.06) 0%, transparent 70%);
   pointer-events: none;
+}
+
+.hero-aurora {
+  position: absolute;
+  top: -180px;
+  left: 35%;
+  width: 760px;
+  height: 760px;
+  background: radial-gradient(circle, rgba(46, 143, 212, 0.14) 0%, rgba(114, 184, 232, 0.05) 45%, transparent 70%);
+  filter: blur(20px);
+  animation: auroraDrift 22s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes auroraDrift {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-70px, 50px) scale(1.12); }
 }
 
 .scroll-cue {
@@ -725,15 +783,23 @@ h2 {
 }
 
 .service-featured {
-  border: 1px solid var(--blue-mid);
-  background: var(--blue-pale);
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--blue-pale), var(--blue-pale)) padding-box,
+    linear-gradient(120deg, var(--blue-light), var(--blue-mid), var(--blue-deep), var(--blue-light)) border-box;
+  background-size: 100% 100%, 300% 300%;
+  animation: gradientBorderShift 10s ease infinite;
   position: relative;
   grid-column: 1 / -1;
 }
 
 .service-featured:hover {
-  border-color: var(--blue-mid);
   box-shadow: 0 14px 36px rgba(46, 143, 212, 0.14);
+}
+
+@keyframes gradientBorderShift {
+  0%, 100% { background-position: 0% 0%, 0% 50%; }
+  50% { background-position: 0% 0%, 100% 50%; }
 }
 
 .service-featured .service-price {
@@ -773,8 +839,10 @@ h2 {
 
 /* ============ HOW IT WORKS ============ */
 .how-it-works {
+  position: relative;
   background: var(--black);
   padding: 100px 0;
+  overflow: hidden;
 }
 
 .how-it-works .container {
@@ -989,8 +1057,11 @@ h2 {
 
 .agent-stat-num {
   font-family: var(--font-serif);
-  font-size: 42px;
-  color: var(--blue-mid);
+  font-size: 46px;
+  background: linear-gradient(135deg, var(--blue-light) 0%, var(--blue-mid) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .agent-stat-label {
