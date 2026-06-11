@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NetHauls Marketplace | Items for Sale Across Maine</title>
 <meta name="description" content="Browse items NetHauls has picked up through our on-site buying program. Furniture, tools, electronics, and more for sale across Maine.">
+<link rel="icon" href="../assets/logo-icon.svg" type="image/svg+xml">
 <style>
   :root {
     --black: #080C10;
@@ -77,9 +78,10 @@
     -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid rgba(255,255,255,0.06);
   }
   .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
-  .nav-logo { display: flex; align-items: baseline; gap: 8px; font-family: var(--serif); font-size: 1.35rem; color: var(--white); letter-spacing: 0.01em; }
+  .nav-logo { display: flex; align-items: center; gap: 10px; font-family: var(--serif); font-size: 1.35rem; color: var(--white); letter-spacing: 0.01em; }
   .nav-logo span { color: var(--blue-light); }
   .nav-logo small { font-size: 0.75rem; font-family: var(--sans); color: var(--silver); letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; }
+  .nav-logo img { width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0; }
   .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
   .nav-links a { color: var(--silver-light); font-size: 0.92rem; transition: color 0.25s ease; }
   .nav-links a:hover { color: var(--white); }
@@ -226,8 +228,9 @@
   /* ---------- Footer ---------- */
   .footer { background: var(--black); color: var(--silver); padding: 50px 0 28px; }
   .footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
-  .footer-brand { font-family: var(--serif); font-size: 1.3rem; color: var(--white); }
+  .footer-brand { font-family: var(--serif); font-size: 1.3rem; color: var(--white); display: flex; align-items: center; gap: 10px; }
   .footer-brand span { color: var(--blue-light); }
+  .footer-brand img { width: 28px; height: 28px; border-radius: 7px; }
   .footer-links { display: flex; gap: 24px; list-style: none; flex-wrap: wrap; }
   .footer-links a { font-size: 0.9rem; color: var(--silver); transition: color 0.25s ease; }
   .footer-links a:hover { color: var(--blue-light); }
@@ -248,7 +251,7 @@
 <!-- ============ NAV ============ -->
 <nav class="nav">
   <div class="container nav-inner">
-    <a href="../index.html" class="nav-logo">NetHauls<span>.</span> <small>Marketplace</small></a>
+    <a href="../index.html" class="nav-logo"><img src="../assets/logo-icon.svg" alt="">NetHauls<span>.</span> <small>Marketplace</small></a>
     <ul class="nav-links">
       <li><a href="../nethauls/index.html">Removal &amp; Buying Program</a></li>
       <li><a href="../nethauls/index.html#contact" class="nav-cta">Get a Quote</a></li>
@@ -318,7 +321,7 @@
 <footer class="footer">
   <div class="container">
     <div class="footer-inner">
-      <div class="footer-brand">NetHauls<span>.</span> Marketplace</div>
+      <div class="footer-brand"><img src="../assets/logo-icon.svg" alt="">NetHauls<span>.</span> Marketplace</div>
       <ul class="footer-links">
         <li><a href="../nethauls/index.html">Main Site</a></li>
         <li><a href="tel:+12074686998">(207) 468-6998</a></li>
