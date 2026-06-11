@@ -24,7 +24,7 @@
     { id: 'su-square',     name: 'Square Card Reader',                  notes: 'Free reader available by mail. 2.6% per swipe.',             cat: 'Branding, Digital &amp; Resale Setup', lean: 0,   std: 50 },
     { id: 'su-ebay',       name: 'eBay Starter Store (1 yr)',           notes: '$21.95/month. 250 free listings/month, lower final value fees.', cat: 'Branding, Digital &amp; Resale Setup', lean: 0, std: 263 },
     { id: 'su-ads',        name: 'Initial Facebook Ad Budget',          notes: 'York County geo-targeted. $10-15/day for 2-4 weeks.',        cat: 'Branding, Digital &amp; Resale Setup', lean: 200, std: 400 },
-    { id: 'su-dumpres',    name: 'Dump Fee Reserve (first month)',      notes: 'York County Solid Waste or Sanford transfer station.',      cat: 'Operating Reserves &amp; Buffer', lean: 300, std: 500 },
+    { id: 'su-dumpres',    name: 'Dump Fee Reserve (first month)',      notes: 'Arundel Transfer Station: ~$40/yard construction debris.',      cat: 'Operating Reserves &amp; Buffer', lean: 300, std: 500 },
     { id: 'su-buyres',     name: 'Buying Reserve (first month)',        notes: 'Cash float to buy items at jobs.',                           cat: 'Operating Reserves &amp; Buffer', lean: 300, std: 500 },
     { id: 'su-misc',       name: 'Miscellaneous / Buffer',              notes: 'Tarps, bungee cords, work boots, first aid kit.',            cat: 'Operating Reserves &amp; Buffer', lean: 300, std: 300 }
   ];
@@ -44,13 +44,13 @@
   ];
 
   var JOB_TYPES = [
-    { id: 'single',   name: 'Single Item',                  priceLow: 50,   priceHigh: 90,   weight: 100,  mattresses: 0 },
-    { id: 'small',    name: 'Small Load (1/4 trailer)',     priceLow: 150,  priceHigh: 225,  weight: 250,  mattresses: 0 },
-    { id: 'medium',   name: 'Medium Load (1/2 trailer)',    priceLow: 275,  priceHigh: 375,  weight: 700,  mattresses: 0 },
-    { id: 'full',     name: 'Full Load (full trailer)',     priceLow: 450,  priceHigh: 625,  weight: 1600, mattresses: 1 },
-    { id: 'cleanout', name: 'Full Property Cleanout',       priceLow: 500,  priceHigh: 1500, weight: 2500, mattresses: 1 },
-    { id: 'estate',   name: 'Estate / Whole-House Cleanout',priceLow: 1200, priceHigh: 3500, weight: 4000, mattresses: 2 },
-    { id: 'hoarding', name: 'Hoarding / Severe Cleanout',   priceLow: 1500, priceHigh: 5000, weight: 6000, mattresses: 3 }
+    { id: 'single',   name: 'Single Item',                  priceLow: 50,   priceHigh: 90,   volume: 0.5, mattresses: 0 },
+    { id: 'small',    name: 'Small Load (1/4 trailer)',     priceLow: 150,  priceHigh: 225,  volume: 1.5, mattresses: 0 },
+    { id: 'medium',   name: 'Medium Load (1/2 trailer)',    priceLow: 275,  priceHigh: 375,  volume: 3,   mattresses: 0 },
+    { id: 'full',     name: 'Full Load (full trailer)',     priceLow: 450,  priceHigh: 625,  volume: 5,   mattresses: 1 },
+    { id: 'cleanout', name: 'Full Property Cleanout',       priceLow: 500,  priceHigh: 1500, volume: 10,  mattresses: 1 },
+    { id: 'estate',   name: 'Estate / Whole-House Cleanout',priceLow: 1200, priceHigh: 3500, volume: 16,  mattresses: 2 },
+    { id: 'hoarding', name: 'Hoarding / Severe Cleanout',   priceLow: 1500, priceHigh: 5000, volume: 22,  mattresses: 3 }
   ];
 
   var FIVE_YEAR = [
@@ -294,11 +294,11 @@
     if (!jt) return;
     var mid = Math.round((jt.priceLow + jt.priceHigh) / 2);
     $('job-fee').value = mid;
-    $('job-weight').value = jt.weight;
+    $('job-volume').value = jt.volume;
     $('job-mattresses').value = jt.mattresses;
     $('job-range').textContent = 'Typical price range: $' + jt.priceLow.toLocaleString() + ' – $' + jt.priceHigh.toLocaleString();
     saveVal('job-fee', mid);
-    saveVal('job-weight', jt.weight);
+    saveVal('job-volume', jt.volume);
     saveVal('job-mattresses', jt.mattresses);
   }
 
@@ -307,16 +307,19 @@
     var distance     = num('job-distance');
     var mpg          = num('job-mpg') || 1;
     var fuelPrice    = num('job-fuelprice');
-    var weight       = num('job-weight');
+    var volume       = num('job-volume');
     var dumpRate     = num('job-dumprate');
     var mattresses   = num('job-mattresses');
     var mattressFee  = num('job-mattressfee');
+    var appliances   = num('job-appliances');
+    var applianceFee = num('job-appliancefee');
+    var specialFees  = num('job-specialfees');
     var scrapCredit  = num('job-scrap');
     var resaleValue  = num('job-resale');
     var buyPct       = num('job-buypct');
     var sellFeePct   = num('job-sellfeepct');
 
-    var dumpFee = (weight / 2000) * dumpRate + mattresses * mattressFee;
+    var dumpFee = volume * dumpRate + mattresses * mattressFee + appliances * applianceFee + specialFees;
     var fuelCost = (distance / mpg) * fuelPrice;
     var buyDiscount = resaleValue * (buyPct / 100);
     var cashCollected = serviceFee - buyDiscount;
@@ -545,8 +548,9 @@
     setupTabNav();
 
     // Bind persisted simple inputs in load calculator + revenue projector
-    ['job-fee', 'job-distance', 'job-mpg', 'job-fuelprice', 'job-weight', 'job-dumprate',
-     'job-mattresses', 'job-mattressfee', 'job-scrap', 'job-resale', 'job-buypct', 'job-sellfeepct',
+    ['job-fee', 'job-distance', 'job-mpg', 'job-fuelprice', 'job-volume', 'job-dumprate',
+     'job-mattresses', 'job-mattressfee', 'job-appliances', 'job-appliancefee', 'job-specialfees',
+     'job-scrap', 'job-resale', 'job-buypct', 'job-sellfeepct',
      'rev-jobsperweek', 'rev-profitperjob', 'rev-revenueperjob', 'rev-overhead'].forEach(function (id) {
       var el = $(id);
       if (!el) return;
@@ -563,8 +567,9 @@
     }
     $('job-type').addEventListener('change', function () { saveVal('job-type', $('job-type').value); });
 
-    ['job-fee', 'job-distance', 'job-mpg', 'job-fuelprice', 'job-weight', 'job-dumprate',
-     'job-mattresses', 'job-mattressfee', 'job-scrap', 'job-resale', 'job-buypct', 'job-sellfeepct'].forEach(function (id) {
+    ['job-fee', 'job-distance', 'job-mpg', 'job-fuelprice', 'job-volume', 'job-dumprate',
+     'job-mattresses', 'job-mattressfee', 'job-appliances', 'job-appliancefee', 'job-specialfees',
+     'job-scrap', 'job-resale', 'job-buypct', 'job-sellfeepct'].forEach(function (id) {
       $(id).addEventListener('input', updateLoadCalc);
     });
     updateLoadCalc();

@@ -184,26 +184,42 @@
               <h3>Dump &amp; Disposal</h3>
               <div class="form-grid form-grid-3">
                 <div class="form-field">
-                  <label for="job-weight">Estimated Load Weight (lbs)</label>
-                  <input type="number" id="job-weight" min="0" step="50">
+                  <label for="job-volume">Estimated Load Volume (cubic yards)</label>
+                  <input type="number" id="job-volume" min="0" step="0.5">
                 </div>
                 <div class="form-field">
-                  <label for="job-dumprate">Transfer Station Rate ($/ton)</label>
-                  <input type="number" id="job-dumprate" min="0" step="5" value="100">
+                  <label for="job-dumprate">Transfer Station Rate ($/yard)</label>
+                  <input type="number" id="job-dumprate" min="0" step="5" value="40">
                 </div>
+                <div class="form-field"></div>
                 <div class="form-field">
                   <label for="job-mattresses"># of Mattresses</label>
                   <input type="number" id="job-mattresses" min="0" step="1">
                 </div>
                 <div class="form-field">
                   <label for="job-mattressfee">Mattress Fee Each ($)</label>
-                  <input type="number" id="job-mattressfee" min="0" step="0.5" value="17.50">
+                  <input type="number" id="job-mattressfee" min="0" step="0.5" value="14">
+                </div>
+                <div class="form-field"></div>
+                <div class="form-field">
+                  <label for="job-appliances"># of Appliances</label>
+                  <input type="number" id="job-appliances" min="0" step="1" value="0">
+                </div>
+                <div class="form-field">
+                  <label for="job-appliancefee">Appliance Fee Each ($)</label>
+                  <input type="number" id="job-appliancefee" min="0" step="0.5" value="10">
+                </div>
+                <div class="form-field"></div>
+                <div class="form-field">
+                  <label for="job-specialfees">Other Special-Item Fees ($)</label>
+                  <input type="number" id="job-specialfees" min="0" step="1" value="0">
                 </div>
                 <div class="form-field">
                   <label for="job-scrap">Scrap Metal Credit ($)</label>
                   <input type="number" id="job-scrap" min="0" step="5" value="0">
                 </div>
               </div>
+              <p class="field-hint">Rates default to the Arundel Transfer Station price list: $40/yard for construction debris &amp; mixed bulky waste, $30/yard for clean wood, mattresses $14 each, appliances $10 each ($20 with Freon). Metal is dropped off free. Use "Other Special-Item Fees" for tires ($6 auto / $11.50 truck), electronics ($1&ndash;$10), or asphalt shingles ($45.50 each).</p>
             </div>
 
             <div class="form-section">
