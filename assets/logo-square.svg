@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" role="img" aria-label="NetHauls">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#16212E"/>
+      <stop offset="100%" stop-color="#080C10"/>
+    </linearGradient>
+    <linearGradient id="crest" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#9AD4F7"/>
+      <stop offset="100%" stop-color="#2E8FD4"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1000" height="1000" fill="url(#bg)"/>
+
+  <!-- roofline crest, two parallel chevrons -->
+  <g fill="none" stroke="url(#crest)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M335 460 L500 320 L665 460"/>
+    <path d="M373 502 L500 392 L627 502"/>
+  </g>
+
+  <!-- wordmark -->
+  <text x="500" y="650" text-anchor="middle"
+        font-family="Georgia, 'Times New Roman', Times, serif"
+        font-size="118" fill="#F4F7FA" letter-spacing="2">NetHauls<tspan fill="#72B8E8">.</tspan></text>
+
+  <!-- tagline -->
+  <text x="500" y="710" text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="28" letter-spacing="6" fill="#72B8E8" font-weight="600">KENNEBUNK, MAINE</text>
+</svg>
