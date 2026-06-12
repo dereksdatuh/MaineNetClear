@@ -57,13 +57,33 @@
     { id: 'hoarding', name: 'Hoarding / Severe Cleanout',   priceLow: 1500, priceHigh: 5000, volume: 22,  mattresses: 3 }
   ];
 
-  var FIVE_YEAR = [
-    { yr: 1, phase: 'Side Hustle',  ops: '2-3 jobs/wk; solo; trailer',                 grossLow: 35000,  grossHigh: 55000,  netLow: 20000,  netHigh: 35000,  milestone: '$5K/mo &middot; Prove model, build reviews, lock in agent referrals' },
-    { yr: 2, phase: 'Side-to-Full', ops: '4-5 jobs/wk; occasional helper',             grossLow: 80000,  grossHigh: 130000, netLow: 50000,  netHigh: 85000,  milestone: '$10K/mo &middot; Full-time decision point; Month 12-18 transition' },
-    { yr: 3, phase: 'Full-Time',    ops: '5-6 jobs/wk; regular helper; dedicated truck', grossLow: 160000, grossHigh: 230000, netLow: 95000, netHigh: 145000, milestone: '$100K/yr &middot; First truck purchase; agent network fully producing' },
-    { yr: 4, phase: 'Growth',       ops: '6-8 jobs/wk; 1-2 helpers; 2 vehicles',       grossLow: 220000, grossHigh: 320000, netLow: 130000, netHigh: 200000, milestone: '$250K/yr &middot; Process and SOP development; crew lead hire' },
-    { yr: 5, phase: 'Scale',        ops: '2 trucks operating; crew lead; GM emerging',  grossLow: 350000, grossHigh: 540000, netLow: 200000, netHigh: 330000, milestone: '$500K/yr &middot; Consider second market: Portsmouth NH or Cumberland County' }
+  var TEN_YEAR_OPTIMISTIC = [
+    { yr: 1,  phase: 'Side Hustle',         ops: '2-3 jobs/wk; solo; trailer',                    grossLow: 35000,  grossHigh: 55000,  netLow: 20000,  netHigh: 35000,  milestone: '$5K/mo &middot; Prove model, build reviews, lock in agent referrals' },
+    { yr: 2,  phase: 'Side-to-Full',        ops: '4-5 jobs/wk; occasional helper',                grossLow: 80000,  grossHigh: 130000, netLow: 50000,  netHigh: 85000,  milestone: '$10K/mo &middot; Full-time decision point; Month 12-18 transition' },
+    { yr: 3,  phase: 'Full-Time',           ops: '5-6 jobs/wk; regular helper; dedicated truck',  grossLow: 160000, grossHigh: 230000, netLow: 95000,  netHigh: 145000, milestone: '$100K/yr &middot; First truck purchase; agent network fully producing' },
+    { yr: 4,  phase: 'Growth',              ops: '6-8 jobs/wk; 1-2 helpers; 2 vehicles',          grossLow: 220000, grossHigh: 320000, netLow: 130000, netHigh: 200000, milestone: '$250K/yr &middot; Process and SOP development; crew lead hire' },
+    { yr: 5,  phase: 'Scale',               ops: '2 trucks operating; crew lead; GM emerging',     grossLow: 350000, grossHigh: 540000, netLow: 200000, netHigh: 330000, milestone: '$500K/yr &middot; Consider second market: Portsmouth NH or Cumberland County' },
+    { yr: 6,  phase: 'Multi-Market',        ops: '2 trucks across 2 markets; crew lead running daily ops', grossLow: 420000, grossHigh: 620000, netLow: 240000, netHigh: 370000, milestone: '$550K/yr &middot; Second market online (Portsmouth NH or Cumberland County)' },
+    { yr: 7,  phase: 'Optimization',        ops: '3rd truck added; standardized pricing &amp; SOPs across markets', grossLow: 480000, grossHigh: 700000, netLow: 270000, netHigh: 410000, milestone: '$650K/yr &middot; Owner shifts toward oversight and sales' },
+    { yr: 8,  phase: 'Regional Operator',   ops: '3 trucks; GM running daily ops; owner focused on growth', grossLow: 550000, grossHigh: 800000, netLow: 310000, netHigh: 470000, milestone: '$750K/yr &middot; Evaluate 3rd market or licensing/franchise model' },
+    { yr: 9,  phase: 'Maturity',            ops: '3-4 trucks; established regional brand &amp; referral network', grossLow: 620000, grossHigh: 900000, netLow: 350000, netHigh: 530000, milestone: '$850K/yr &middot; Fleet refresh, larger yard/warehouse' },
+    { yr: 10, phase: 'Established Brand',   ops: '4 trucks across 3 markets; full management layer', grossLow: 700000, grossHigh: 1000000, netLow: 400000, netHigh: 600000, milestone: '$1M/yr &middot; Decade mark: reinvest, sell, or franchise decision point' }
   ];
+
+  var TEN_YEAR_REALISTIC = [
+    { yr: 1,  phase: 'Side Hustle (Slow Start)', ops: '0-1 jobs/wk months 1-3, ramping to 2-3/wk by Q4; solo; trailer', grossLow: 18000,  grossHigh: 32000,  netLow: 10000,  netHigh: 20000,  milestone: 'Months 1-3 building reviews &amp; referrals before volume kicks in' },
+    { yr: 2,  phase: 'Side-to-Full',        ops: '3-4 jobs/wk; occasional helper',                grossLow: 50000,  grossHigh: 85000,  netLow: 28000,  netHigh: 52000,  milestone: '$4-7K/mo avg &middot; Full-time decision delayed to Month 18-24' },
+    { yr: 3,  phase: 'Approaching Full-Time', ops: '4-5 jobs/wk; helper part of the year',         grossLow: 100000, grossHigh: 160000, netLow: 58000,  netHigh: 98000,  milestone: '$60-90K/yr &middot; Dedicated truck purchase considered' },
+    { yr: 4,  phase: 'Full-Time',           ops: '5-6 jobs/wk; 1 helper; dedicated truck',         grossLow: 160000, grossHigh: 240000, netLow: 92000,  netHigh: 150000, milestone: '$150K/yr &middot; First truck purchase; agent network maturing' },
+    { yr: 5,  phase: 'Growth',              ops: '6-7 jobs/wk; 1-2 helpers; 2 vehicles',           grossLow: 230000, grossHigh: 340000, netLow: 130000, netHigh: 210000, milestone: '$250-300K/yr &middot; Second vehicle added' },
+    { yr: 6,  phase: 'Scale',               ops: '2 trucks operating; crew lead emerging',         grossLow: 290000, grossHigh: 430000, netLow: 165000, netHigh: 265000, milestone: '$350K/yr &middot; Consider second market' },
+    { yr: 7,  phase: 'Multi-Market',        ops: '2 trucks across 2 markets',                      grossLow: 350000, grossHigh: 520000, netLow: 200000, netHigh: 320000, milestone: '$450K/yr &middot; Second market online' },
+    { yr: 8,  phase: 'Regional Operator',   ops: '2-3 trucks; GM role developing',                 grossLow: 410000, grossHigh: 610000, netLow: 235000, netHigh: 375000, milestone: '$550K/yr &middot; Standardize SOPs, evaluate 3rd truck' },
+    { yr: 9,  phase: 'Maturity',            ops: '3 trucks; established referral network',         grossLow: 470000, grossHigh: 700000, netLow: 270000, netHigh: 430000, milestone: '$650K/yr &middot; Owner shifting toward oversight' },
+    { yr: 10, phase: 'Established Brand',   ops: '3 trucks across 2-3 markets',                    grossLow: 540000, grossHigh: 800000, netLow: 310000, netHigh: 490000, milestone: '$750K/yr &middot; Decade mark: reinvest, sell, or franchise decision point' }
+  ];
+
+  var outlookScenario = 'realistic';
 
   var CHECKLIST = [
     {
@@ -427,14 +447,15 @@
     $('be-target6k').textContent = (target6kJobsMonth / weeksPerMonth).toFixed(1) + ' jobs/week';
   }
 
-  // ---------- 5-YEAR OUTLOOK ----------
+  // ---------- 10-YEAR OUTLOOK ----------
 
   function renderFiveYear() {
+    var data = outlookScenario === 'optimistic' ? TEN_YEAR_OPTIMISTIC : TEN_YEAR_REALISTIC;
     var body = $('fiveyear-body');
-    var maxGross = Math.max.apply(null, FIVE_YEAR.map(function (y) { return y.grossHigh; }));
+    var maxGross = Math.max.apply(null, TEN_YEAR_OPTIMISTIC.map(function (y) { return y.grossHigh; }));
     var html = '';
 
-    FIVE_YEAR.forEach(function (y) {
+    data.forEach(function (y) {
       var lowPct = (y.grossLow / maxGross) * 100;
       var highPct = (y.grossHigh / maxGross) * 100;
       html += '<tr>' +
@@ -452,6 +473,17 @@
     });
 
     body.innerHTML = html;
+  }
+
+  function setOutlookScenario(which) {
+    outlookScenario = which;
+    saveVal('outlook-scenario', which);
+    $('btn-outlook-realistic').classList.toggle('active', which === 'realistic');
+    $('btn-outlook-optimistic').classList.toggle('active', which === 'optimistic');
+    $('outlook-scenario-note').textContent = which === 'optimistic'
+      ? 'Optimistic: assumes near-flawless execution from week one, with no slow ramp-up period.'
+      : 'Realistic: accounts for a slow ramp-up and a growth curve about a year behind the optimistic plan.';
+    renderFiveYear();
   }
 
   // ---------- LAUNCH CHECKLIST ----------
@@ -669,7 +701,7 @@
     renderStartupTable();
     renderMonthlyTable();
     populateJobTypeSelect();
-    renderFiveYear();
+    setOutlookScenario(loadVal('outlook-scenario') || 'realistic');
     renderChecklist();
     setupTabNav();
 
@@ -719,6 +751,8 @@
 
     $('btn-preset-lean').addEventListener('click', function () { setStartupPreset('lean'); });
     $('btn-preset-standard').addEventListener('click', function () { setStartupPreset('standard'); });
+    $('btn-outlook-realistic').addEventListener('click', function () { setOutlookScenario('realistic'); });
+    $('btn-outlook-optimistic').addEventListener('click', function () { setOutlookScenario('optimistic'); });
     $('btn-use-job-profit').addEventListener('click', useLastJobForRevenue);
     $('btn-reset-all').addEventListener('click', resetAll);
 
